@@ -2,11 +2,20 @@
 
 ---
 
-clone: `git clone https://github.com/aykhanhuseyn/omnio-fed-9.git omnio`
+make omnio foder
+`mkdir omnio`
 
-pre-start `cd omnio && yarn`;
+go to folder
+`cd omnio`
 
-start: `yarn dev`
+clone repo
+`git clone https://github.com/aykhanhuseyn/omnio-fed-9.git .`
+
+install
+`yarn`
+
+start
+`yarn dev`
 
 ---
 
