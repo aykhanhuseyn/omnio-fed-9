@@ -1,14 +1,21 @@
-# Omnio app - final project of FED 9 
+# Omnio app - final project of FED 9
 
-Start with `yarn dev` command
+---
 
+clone: `git clone https://github.com/aykhanhuseyn/omnio-fed-9.git omnio`
 
-## @Rovshan  => MBox (message box) + OOPS + Skeleton
+pre-start `cd omnio && yarn`;
 
-## @AYNUR  => Layout + Settings + Skeleton
+start: `yarn dev`
+
+---
+
+## @Rovshan => MBox (message box) + OOPS + Skeleton
+
+## @AYNUR => Layout + Settings + Skeleton
 
 ## @leila adigozelli => Profile + Login + Skeleton
 
-## @Elkhan(bad-chost)  => Channels + Dashboard + Skeleton
+## @Elkhan(bad-chost) => Channels + Dashboard + Skeleton
 
-## @Jamil  =>  Analytics
+## @Jamil => Analytics
