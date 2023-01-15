@@ -1,7 +1,9 @@
 import React from 'react'
 
-export const Mbox = () => {
+const Mbox = () => {
   return (
     <div>Mbox</div>
   )
 }
+
+export default Mbox;

@@ -1,7 +1,7 @@
-import React from 'react'
-
-export const Analytics = () => {
+const Analytics = () => {
   return (
     <div>Analytics</div>
   )
 }
+
+export default Analytics;

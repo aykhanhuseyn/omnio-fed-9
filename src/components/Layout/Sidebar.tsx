@@ -8,6 +8,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import type { BadgeTypeMap } from "@mui/material";
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
@@ -26,13 +27,16 @@ const StyledAside = styled.aside`
   align-items: center;
   padding: 32px 0;
 `;
+
 const StyledOmnio = styled.img`
   width: 52px;
   height: 52px;
 `;
+
 const StyledLink = styled(Link)`
   margin-bottom: 52px;
 `;
+
 const StyledNav = styled.nav`
   margin-top: 16px;
   border-top: 1px solid #3d3575;
@@ -42,6 +46,7 @@ const StyledNav = styled.nav`
   padding: 24px 0;
   width: 100%;
 `;
+
 const StyledNavLink = styled(NavLink)`
   margin-bottom: 32px;
   padding: 8px 10px;
@@ -56,6 +61,7 @@ const StyledNavLink = styled(NavLink)`
     }
   }
 `;
+
 const StyledBadge = styled(Badge)`
   & .MuiBadge-badge {
     position: "absolute";
@@ -65,7 +71,7 @@ const StyledBadge = styled(Badge)`
 `;
 
 export const Sidebar = () => {
-  const [color, setColor] = useState("success");
+  const [color, setColor] = useState<BadgeTypeMap['props']['color']>("success");
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -131,7 +137,7 @@ export const Sidebar = () => {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-      ></StyledBadge>{" "}
+      ></StyledBadge>
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
@@ -143,7 +149,6 @@ export const Sidebar = () => {
       >
         {badgeTypes.map((badge) => (
           <MenuItem key={badge.key} onClick={() => setColor(badge.color)}>
-            {" "}
             <ListItemIcon>
               <Badge
                 color={badge.color}
