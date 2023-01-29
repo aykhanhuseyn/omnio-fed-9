@@ -21,7 +21,7 @@ function LoginForm() {
 				alt='vector'
 				style={{ position: 'absolute', left: '34%', top: '16%' }}
 			/>
-			<Form
+			<Form 
 				height='412px'
 				width='340px'
 				left='50%'
@@ -31,6 +31,8 @@ function LoginForm() {
 				index='99'
 				transform='translate(-50%,50%)'
 				borderRadius='8px'
+				color = '#fff'
+		
 			>
 				<Header justify='center' align='center' padding='19px'>
 					<QuestionAnswer sx={{ width: '60px', height: '69px' }} />
