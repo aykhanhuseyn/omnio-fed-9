@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Elon from '../../public/profile/elon.jpeg'
+import Elon from '../../../public/profile/elon.jpeg'
 
 
 const ContactItem = styled.div`

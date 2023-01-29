@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import Elon from "../../public/profile/elon.jpeg";
-import Jeff from "../../public/profile/jeff.jpeg";
+import Elon from "../../../public/profile/elon.jpeg"
+import Jeff from "../../../public/profile/jeff.jpeg";
 import { AiOutlineSearch } from "react-icons/ai";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { BsCheck2 } from 'react-icons/bs' 

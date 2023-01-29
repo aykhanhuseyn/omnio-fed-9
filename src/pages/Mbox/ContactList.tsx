@@ -4,7 +4,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import Messages from "./Messages";
 
 const Container = styled.div`
-  diplay: flex;
+  display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;

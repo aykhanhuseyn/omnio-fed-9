@@ -12,7 +12,7 @@ const Login = loadable(() => import("./pages/Login"));
 const Forgot = loadable(() => import("./pages/Login"));
 
 const Dashboard = loadable(() => import("./pages/Dashboard"));
-const Mbox = loadable(() => import("./components/Mbox/ContactList"));
+const Mbox = loadable(() => import("./pages/Mbox/index"));
 
 const Settings = loadable(() => import("./pages/Settings/Settings"));
 const Users = loadable(() => import("./pages/Settings/Users/Users"));
@@ -29,15 +29,15 @@ const GeneralProfileSettings = loadable(
 function App() {
   const isLoggedIn = useSelector(loginSelector);
 
-  if (isLoggedIn) {
-    return (
-      <Routes>
-        <Route path="login" element={<Login />} />
-        <Route path="forgot" element={<Forgot />} />
-        <Route path="*" element={<Navigate to="login" replace />} />
-      </Routes>
-    );
-  }
+  // if (isLoggedIn) {
+  //   return (
+  //     <Routes>
+  //       <Route path="login" element={<Login />} />
+  //       <Route path="forgot" element={<Forgot />} />
+  //       <Route path="*" element={<Navigate to="login" replace />} />
+  //     </Routes>
+  //   );
+  // }
 
   return (
     <Layout>
