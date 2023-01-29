@@ -11,6 +11,8 @@ interface FormProps {
 	index: CSSProperties['zIndex'];
 	transform: CSSProperties['transform'];
 	borderRadius: CSSProperties['borderRadius'];
+	color: CSSProperties['backgroundColor']
+
 }
 
 export const Form = styled.form<FormProps>`
@@ -23,6 +25,8 @@ export const Form = styled.form<FormProps>`
 	transform: ${(props) => props.transform || 'translate'};
 	padding: ${(props) => props.padding || '0'};
 	z-index: ${(props) => props.index || '0'};
+	background-color: ${(props) =>props.color}
+
 `;
 
 interface HeaderProps {
@@ -33,6 +37,7 @@ interface HeaderProps {
 	width?: CSSProperties['width'];
 	height?: CSSProperties['height'];
 	color?: CSSProperties['color'];
+	
 }
 
 export const Header = styled.div<HeaderProps>`
