@@ -12,7 +12,7 @@ const Login = loadable(() => import('./pages/Login'));
 const Forgot = loadable(() => import('./pages/Login'));
 
 const Dashboard = loadable(() => import('./pages/Dashboard'));
-const Mbox = loadable(() => import('./components/Mbox/ContactList'));
+const Mbox = loadable(() => import('./pages/Mbox'));
 
 const Settings = loadable(() => import('./pages/Settings/Settings'));
 const Users = loadable(() => import('./pages/Settings/Users/Users'));
