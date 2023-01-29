@@ -7,18 +7,17 @@ import {
   IconButton,
   ListItemIcon,
   ListItemText,
+  styled,
 } from "@mui/material";
-import type { BadgeTypeMap } from "@mui/material";
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import styled from "styled-components";
+// import styled from "styled-components";
 import omnio_icon from "../../../public/Omnio_icon_white.png";
 import { badgeTypes } from "../../data/badgeTypes";
 import { sidebarData } from "../../data/sidebarData";
 
 const settings = ["Profile", "Log out"];
-
-const StyledAside = styled.aside`
+export const StyledAside = styled('aside')`
   height: 100vh;
   width: 84px;
   background-color: #574b90;
@@ -26,18 +25,21 @@ const StyledAside = styled.aside`
   flex-direction: column;
   align-items: center;
   padding: 32px 0;
+  position: 'fixed';
+  left: 0;
+  top: 0;
 `;
 
-const StyledOmnio = styled.img`
+const StyledOmnio = styled('img')`
   width: 52px;
   height: 52px;
 `;
 
-const StyledLink = styled(Link)`
+ const StyledLink = styled(Link)`
   margin-bottom: 52px;
 `;
 
-const StyledNav = styled.nav`
+export const StyledNav = styled('nav')`
   margin-top: 16px;
   border-top: 1px solid #3d3575;
   display: flex;
@@ -47,12 +49,12 @@ const StyledNav = styled.nav`
   width: 100%;
 `;
 
-const StyledNavLink = styled(NavLink)`
+export const StyledNavLink = styled(NavLink)`
   margin-bottom: 32px;
   padding: 8px 10px;
   border-radius: 4px;
   &:hover {
-    background-color: #bfb4d5;
+    background-color: #978CBA;
   }
   &.active {
     background-color: #bfb4d5;
@@ -71,16 +73,25 @@ const StyledBadge = styled(Badge)`
 `;
 
 export const Sidebar = () => {
-  const [color, setColor] = useState<BadgeTypeMap['props']['color']>("success");
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClickListItem = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
+  const handleMenuItemClick = (
+    event: React.MouseEvent<HTMLElement>,
+    index: number
+  ) => {
+    setSelectedIndex(index);
+    setAnchorEl(null);
+  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -104,7 +115,7 @@ export const Sidebar = () => {
         </IconButton>
       </Tooltip>
       <Menu
-        sx={{ mt: "45px" }}
+        sx={{ mt: "10px", ml: "76px" }}
         anchorEl={anchorElUser}
         anchorOrigin={{
           vertical: "top",
@@ -129,34 +140,41 @@ export const Sidebar = () => {
           vertical: "bottom",
           horizontal: "right",
         }}
-        color={color}
+        color={badgeTypes[selectedIndex].color}
         overlap="circular"
         badgeContent=" "
-        id="basic-button"
-        aria-controls={open ? "basic-menu" : undefined}
-        aria-haspopup="true"
+        id="lock-button"
+        aria-haspopup="listbox"
+        aria-controls="lock-menu"
+        aria-label="when device is locked"
         aria-expanded={open ? "true" : undefined}
-        onClick={handleClick}
+        onClick={handleClickListItem}
       ></StyledBadge>
       <Menu
-        id="basic-menu"
+        sx={{ mt:'-20px',ml:'50px' }}
+        id="lock-menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
         MenuListProps={{
-          "aria-labelledby": "basic-button",
+          "aria-labelledby": "lock-button",
+          role: "listbox",
         }}
       >
-        {badgeTypes.map((badge) => (
-          <MenuItem key={badge.key} onClick={() => setColor(badge.color)}>
+        {badgeTypes.map((type, index) => (
+          <MenuItem
+            key={type.key}
+            selected={index === selectedIndex}
+            onClick={(event) => handleMenuItemClick(event, index)}
+          >
             <ListItemIcon>
               <Badge
-                color={badge.color}
+                color={type.color}
                 overlap="circular"
                 badgeContent=" "
               ></Badge>
             </ListItemIcon>
-            <ListItemText>{badge.text}</ListItemText>
+            <ListItemText>{type.text}</ListItemText>
           </MenuItem>
         ))}
       </Menu>
