@@ -2,6 +2,9 @@ import loadable from "@loadable/component";
 import { useSelector } from "react-redux";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Layout } from "./components/Layout";
+//import ProfileLayout from "./components/ProfileLayout";
+import ProfileSide from "./components/ProfileSide/ProfileSide";
+//import SecurityProfile from "./pages/Profile/SecurityProfile/SecurityProfile";
 import { loginSelector } from "./redux/auth.slice";
 import "./styles/style.css";
 
@@ -13,12 +16,15 @@ const Mbox = loadable(() => import("./pages/Mbox"));
 const Settings = loadable(() => import("./pages/Settings"));
 const Analytics = loadable(() => import("./pages/Analytics"));
 const Channels = loadable(() => import("./pages/Channels"));
-const Profile = loadable(() => import("./pages/Profile"));
+const SecurityProfile = loadable(() => import("./pages/Profile/SecurityProfile"));
+const ProfileLayout = loadable(()=>import("./components/ProfileLayout"))
+const GeneralProfileSettings =loadable (()=>import("./pages/Profile/SecurityProfile"))
+
 
 function App() {
   const isLoggedIn = useSelector(loginSelector);
 
-  if (!isLoggedIn) {
+  if (isLoggedIn) {
     return (
       <Routes>
         <Route path='login' element={<Login />} />
@@ -36,7 +42,12 @@ function App() {
         <Route path="/channels" element={<Channels />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/profile" element={<Profile/>}/>
+        <Route path="/profile" element={<ProfileLayout/>}>
+        <Route path="security" element={<SecurityProfile/>}/>
+        <Route path="general" element={<GeneralProfileSettings/>}/>
+        </Route>
+        
+
       </Routes>
       
     </Layout>
