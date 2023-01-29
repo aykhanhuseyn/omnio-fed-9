@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import Elon from '../../public/profile/elon.jpeg';
-import Jeff from '../../public/profile/jeff.jpeg';
+import Elon from '../../../public/profile/elon.jpeg';
+import Jeff from '../../../public/profile/jeff.jpeg';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
@@ -9,7 +9,7 @@ import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined
 const Container = styled.div`
 	display: flex;
 	flex-direction: column;
-	height: 100%;
+	height: 100vh;
 	flex: 3;
 	background: #f7f8fd;
 `;
@@ -24,10 +24,10 @@ const ProfileHeader = styled.div`
 	padding: 10px;
 `;
 
-const LeftSide = styled.div`
-	display: flex;
-	flex-direction: column;
-`;
+// const LeftSide = styled.div`
+// 	display: flex;
+// 	flex-direction: column;
+// `;
 
 const ContactInfo = styled.div`
 	display: flex;
@@ -52,13 +52,6 @@ const RightSide = styled.div`
 	align-items: center;
 `;
 
-const OkeyIcon = styled.img`
-	width: 20px;
-	height: 20px;
-	bakcground: transparent;
-	border-radius: 50%;
-	// margin: 0 30px 0px 30px;
-`;
 
 const BgIcon = styled.div`
 	padding: 7px;
@@ -85,12 +78,12 @@ function Conversation() {
 	return (
 		<Container>
 			<ProfileHeader>
-				<LeftSide>
+				{/* <LeftSide> */}
 					<ContactInfo>
 						<ProfileImage src={Elon} />
 						<ProfileName>William</ProfileName>
 					</ContactInfo>
-				</LeftSide>
+				{/* </LeftSide> */}
 
 				<RightSide>
 					<ProfileBar>
@@ -105,7 +98,7 @@ function Conversation() {
 							Dolores Abernathy
 						</ProfileName>
 						<a href='#'>
-							<ArrowDropDownOutlinedIcon style={{ width: '18px' }} />
+							<ArrowDropDownOutlinedIcon/>
 						</a>
 					</ProfileBar>
 

@@ -9,7 +9,7 @@ const Container = styled.div`
 	height: 100%;
 	width: 100%;
 	flex: 1;
-	padding: 0px 20px;
+	// padding: 0px 20px;
 	border-right: 1px solid rgba(0, 0, 0, 0.14);
 
 `;
@@ -28,7 +28,7 @@ const Logo = styled.div`
 `;
 
 const BgDotIcon = styled.div`
-	padding: 5px;
+	padding: 7px;
 	background: #f2f4ff;
 	border-radius: 50%;
 `;
@@ -41,6 +41,7 @@ const SearchBox = styled.div`
 
 const SearchContainer = styled.div`
 	display: flex;
+	align-items: center;
 	flex-direction: row;
 	background: #f2f4ff;
 	border-radius: 16px;
@@ -69,7 +70,7 @@ const ContactList = () => {
 				<Logo>Chats</Logo>
 				<BgDotIcon>
 					<a href='#'>
-						<MoreVertOutlinedIcon style={{ fontSize: '20px' }} />
+						<MoreVertOutlinedIcon style={{ fontSize: '25px' }} />
 					</a>
 				</BgDotIcon>
 			</LogoInfoDiv>
@@ -77,7 +78,7 @@ const ContactList = () => {
 			<SearchBox>
 				<SearchContainer>
 					<SearchLogo>
-						<SearchOutlinedIcon style={{ padding: '5px' }} />
+						<SearchOutlinedIcon style={{fontSize: '18px',}}/>
 					</SearchLogo>
 					<SearchInput placeholder='Search' />
 				</SearchContainer>
@@ -87,6 +88,11 @@ const ContactList = () => {
 			<Messages />
 			<Messages />
 			<Messages />
+			<Messages />
+			<Messages />
+			<Messages />
+			<Messages />
+
 		</Container>
 	);
 };

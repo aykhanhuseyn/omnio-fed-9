@@ -1,24 +1,24 @@
 import ContactList from './ContactList'
 import Conversation from './Conversation'
-import Messages from './Messages'
 import styled from 'styled-components';
+
 
 
 const Container = styled.div`
   display: flex;
-  flex-direction: row;
-  height: 100vh;
+  // flex-direction: row;
   width: 100%;
+  height: 100vh;
 `;
 
 function index() {
   return (
     
     <Container>
-    <Conversation />
-    <Messages />
     <ContactList />
+    <Conversation />
     </Container>
+    
     
 
   )
