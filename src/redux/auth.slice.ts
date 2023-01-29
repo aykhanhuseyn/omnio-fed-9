@@ -1,14 +1,32 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { find } from 'lodash';
+import { users } from '../data/users';
+import { LoginUser, User } from '../models';
 import type { RootState } from './store';
+
+interface State {
+	user: User | null;
+	loggedIn: boolean;
+}
+
+const initialState: State = {
+	user: null,
+	loggedIn: false,
+};
 
 const authSlice = createSlice({
 	name: 'auth',
-	initialState: {
-		loggedIn: true,
-	},
+	initialState,
 	reducers: {
-		logIn: (state, action) => {
-			state.loggedIn = true;
+		logIn: (state, { payload }: PayloadAction<LoginUser>) => {
+			const found = find(users, {
+				username: payload.username,
+				password: payload.password,
+			});
+			if (found) {
+				state.user = found;
+				state.loggedIn = true;
+			}
 		},
 		logOut: (state) => {
 			state.loggedIn = false;

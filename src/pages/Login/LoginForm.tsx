@@ -1,3 +1,4 @@
+import { useDispatch } from 'react-redux';
 import {
 	Button,
 	Checkbox,
@@ -9,11 +10,14 @@ import {
 	TextField,
 	Typography,
 } from '@mui/material';
+import QuestionAnswer from '@mui/icons-material/QuestionAnswer';
 import { Form } from './StyledForm';
 import { Header } from './StyledForm';
-import QuestionAnswer from '@mui/icons-material/QuestionAnswer';
+import { logIn } from '../../redux/auth.slice';
 
 function LoginForm() {
+	const dispatch = useDispatch();
+
 	return (
 		<>
 			<img
@@ -21,7 +25,7 @@ function LoginForm() {
 				alt='vector'
 				style={{ position: 'absolute', left: '34%', top: '16%' }}
 			/>
-			<Form 
+			<Form
 				height='412px'
 				width='340px'
 				left='50%'
@@ -31,8 +35,24 @@ function LoginForm() {
 				index='99'
 				transform='translate(-50%,50%)'
 				borderRadius='8px'
-				color = '#fff'
-		
+				color='#fff'
+				onSubmit={(e) => {
+					e.preventDefault();
+
+					console.log(
+						(e.target as any)[0]?.value,
+						(e.target as any)[2]?.value,
+						(e.target as any)[4]?.checked,
+					);
+
+					dispatch(
+						logIn({
+							username: (e.target as any)[0]?.value,
+							password: (e.target as any)[2]?.value,
+							remember: (e.target as any)[4]?.checked,
+						}),
+					);
+				}}
 			>
 				<Header justify='center' align='center' padding='19px'>
 					<QuestionAnswer sx={{ width: '60px', height: '69px' }} />
@@ -44,7 +64,8 @@ function LoginForm() {
 					<TextField
 						size='small'
 						variant='outlined'
-						label='Email'
+						label='Username'
+						name='username'
 						sx={{ marginBottom: '30px', width: '268px' }}
 					/>
 				</FormControl>
@@ -56,13 +77,14 @@ function LoginForm() {
 						sx={{ marginBottom: '34px', width: '268px' }}
 					>
 						<InputLabel>Password</InputLabel>
-						<OutlinedInput label='Password' />
+						<OutlinedInput name='password' label='Password' />
 					</FormControl>
 				</div>
 
 				<FormGroup>
 					<FormControlLabel
 						control={<Checkbox />}
+						name='remember'
 						label='Remember me'
 						sx={{ marginBottom: '20px' }}
 						color='grey.darken-2'
@@ -75,7 +97,7 @@ function LoginForm() {
 					variant='contained'
 					sx={{ width: '268px' }}
 				>
-					test
+					Login
 				</Button>
 			</Form>
 
