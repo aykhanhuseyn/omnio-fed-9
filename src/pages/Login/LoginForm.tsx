@@ -75,7 +75,7 @@ function LoginForm() {
 					variant='contained'
 					sx={{ width: '268px' }}
 				>
-					test
+					Login
 				</Button>
 			</Form>
 
