@@ -65,11 +65,11 @@ export const StyledNavLink = styled(NavLink)`
 `;
 
 const StyledBadge = styled(Badge)`
-  & .MuiBadge-badge {
-    position: "absolute";
-    bottom: 12px;
-    left: 0;
-  }
+	& .MuiBadge-badge {
+		position: 'absolute';
+		bottom: 12px;
+		left: 0;
+	}
 `;
 
 export const Sidebar = () => {
@@ -96,13 +96,13 @@ export const Sidebar = () => {
     null
   );
 
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
+	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+		setAnchorElUser(event.currentTarget);
+	};
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+	const handleCloseUserMenu = () => {
+		setAnchorElUser(null);
+	};
 
   return (
     <StyledAside>
