@@ -1,6 +1,4 @@
-import styled from 'styled-components';
-import Elon from '../../../public/profile/elon.jpeg'
-
+import styled from 'styled-components'
 
 const ContactItem = styled.div`
     display: flex;
@@ -8,7 +6,11 @@ const ContactItem = styled.div`
     border-bottom: 1px solid #f2f2f2;
     background: #fff;
     cursor: pointer;
-    padding: 15px 12px;
+    padding: 16px 12px;
+
+    &:hover{
+        background: #f0f0f0;
+    }
 `;
 
 const ProfileIcon = styled.img`
@@ -34,6 +36,7 @@ const MessageText = styled.span`
     font-size: 14px;
     margin-top: 3px;
     color: grey;
+    overflow: auto;
 `;
 
 const MessageTime = styled.span`
@@ -44,15 +47,16 @@ const MessageTime = styled.span`
 
 
 
-const Messages = () => {
+const Messages = (props) => {
+    const { userData } = props;
     return (
         <ContactItem>
-            <ProfileIcon src={Elon} />
+            <ProfileIcon src={userData.profilePic} />
             <ContactInfo>
-                <ContactName>William</ContactName>
-                <MessageText>Agilli ol!</MessageText>
+                <ContactName>{userData.name}</ContactName>
+                <MessageText>{userData.lastText}</MessageText>
             </ContactInfo>
-                <MessageTime>22.01.2023</MessageTime>
+                <MessageTime>{userData.lastTextTime}</MessageTime>
 
         </ContactItem>
     )

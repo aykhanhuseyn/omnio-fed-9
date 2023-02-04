@@ -10,7 +10,7 @@ const StyledMain = styled('main')`
   min-height: 100vh;
   width: 100vw;
   /* margin-left: 84px; */
-  padding: 32px 40px;
+  padding: 0;
 `;
 
 export const Layout: FC<LayoutProps> = ({ children }) => {
