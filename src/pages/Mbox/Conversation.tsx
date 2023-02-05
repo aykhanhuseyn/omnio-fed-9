@@ -111,13 +111,13 @@ const MessageContainer = styled.div`
   overflow-y: auto;
 `;
 
-const MessageDiv = styled.div`
+const MessageDiv = styled.div<{isYours: boolean}>`
   display: flex;
   justify-content: ${(props) => (props.isYours ? "flex-end" : "flex-start")};
   margin: 5px 15px;
 `;
 
-const Message = styled.div`
+const Message = styled.div<{isYours: boolean}>`
   background: ${(props) => (props.isYours ? "#574B90" : "#EEE3F4")};
   max-width: 50%;
   color: #303030;

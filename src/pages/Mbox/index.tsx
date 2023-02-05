@@ -9,34 +9,34 @@ const Container = styled.div`
   width: 100%;
   height: 100vh;
 `;
-const Placeholder = styled.div`
-  flex: 3;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.45);
-`;
+// const Placeholder = styled.div`
+//   flex: 3;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   font-size: 14px;
+//   color: rgba(0, 0, 0, 0.45);
+// `;
 
-const ChatPlaceholder = styled.img`
-  width: 100%;
-  height: 100%;
-  obeject-fit: cover;
-`;
+// const ChatPlaceholder = styled.img`
+//   width: 100%;
+//   height: 100%;
+//   obeject-fit: cover;
+// `;
 
 function index() {
-  const [selectChat, setChat] = useState();
+  // const [selectChat, setChat] = useState();
   return (
     <Container>
       <ContactList />
-      {selectChat ? (
+      {/* {selectChat ? ( */}
         <Conversation />
-      ) : (
-        <Placeholder>
-          <ChatPlaceholder src="/profile/Screenshot (7).png" />
-        </Placeholder>
-      )}
+      {/* ) : ( */}
+        {/* // <Placeholder> */}
+          {/* <ChatPlaceholder src="/profile/Screenshot (7).png" /> */}
+        {/* // </Placeholder> */}
+      {/* )} */}
     </Container>
   );
 }
