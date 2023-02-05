@@ -25,14 +25,13 @@ const user: User = {
 	password: '',
 	birthDate: '1999-11-31',
 };
-export interface FormValues{
-	id:any,
-	name:string,
-	surname:string,
-	username:string,
-	password:string,
-	confirmPassword:string,
-	email:string,
-	role:string,
-	tenant:string
+export interface FormValues {
+	name: string;
+	surname: string;
+	email: string;
+	username: string;
+	role: string;
+	tenant: string;
+	password: string;
+	confirmPassword: string;
 }
