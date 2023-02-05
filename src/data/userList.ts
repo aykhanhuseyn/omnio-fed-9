@@ -96,7 +96,7 @@ export const contactList = [
     {
       id: 5,
       messageType: "TEXT",
-      text: "Have you subscribed The Indian Dev ?",
+      text: "Have you subscribed The Graz Dev ?",
       senderID: 1,
       addedOn: "12:00 PM",
     },
