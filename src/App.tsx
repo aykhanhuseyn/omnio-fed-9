@@ -29,7 +29,7 @@ const GeneralProfileSettings = loadable(
 function App() {
   const isLoggedIn = useSelector(loginSelector);
 
-  if (isLoggedIn) {
+  if (!isLoggedIn) {
     return (
       <Routes>
         <Route path="login" element={<Login />} />
