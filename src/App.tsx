@@ -45,6 +45,7 @@ function App() {
 				<Route index element={<Dashboard />} />
 				<Route path='mbox' element={<Mbox />} />
 				<Route path='channels' element={<Channels />} />
+				<Route path='customers' element={<Channels />} />
 				<Route path='analytics' element={<Analytics />} />
 				<Route path='settings' element={<Settings />}>
 					<Route path='users' element={<Users />} />
