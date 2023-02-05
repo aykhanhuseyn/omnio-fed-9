@@ -12,22 +12,31 @@ import {
 import { useState } from 'react';
 import type { MouseEvent } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { CSSProperties } from 'styled-components';
 import { badgeTypes } from '../../data/badgeTypes';
 import { sidebarData } from '../../data/sidebarData';
 
 const settings = ['Profile', 'Log out'];
-
-export const StyledAside = styled('aside')`
-	height: 100vh;
-	width: 84px;
+interface AsideProps{
+	position:CSSProperties['position'];
+	width:`${number}px`;
+	borderLeft:CSSProperties['borderLeft']
+	padding:CSSProperties['padding']
+	alignItems:CSSProperties['alignItems']
+}
+export const StyledAside = styled('aside')<AsideProps>`
+	min-height: 100vh;
+	width: ${props=>props.width ||'84px'};
 	background-color: #574b90;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	padding: 32px 0;
-	position: 'fixed';
+	align-items: ${props=>props.alignItems||'center'};
+	padding: ${props=>props.padding||'0'};
+	position: ${props=>props.position ||'fixed'};
 	left: 0;
 	top: 0;
+	border-left: ${props=>props.borderLeft||'none'};
+
 `;
 
 const StyledOmnio = styled('img')`
@@ -58,6 +67,7 @@ export const StyledNavLink = styled(NavLink)`
 	}
 	&.active {
 		background-color: #bfb4d5;
+		color: #574b90;
 		.MuiSvgIcon-root {
 			color: #574b90;
 		}
@@ -103,7 +113,7 @@ export const Sidebar = () => {
 	};
 
 	return (
-		<StyledAside>
+		<StyledAside position='fixed' width='84px' borderLeft='none' padding='32px 0' alignItems='center'>
 			<StyledLink to='/'>
 				<StyledOmnio src='/Omnio_icon_white.png' alt='omnio icon'></StyledOmnio>
 			</StyledLink>

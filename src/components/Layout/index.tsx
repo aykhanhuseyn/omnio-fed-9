@@ -9,8 +9,7 @@ type LayoutProps = {
 const StyledMain = styled('main')`
   min-height: 100vh;
   width: 100vw;
-  /* margin-left: 84px; */
-  padding: 0;
+  margin-left: 84px;
 `;
 
 export const Layout: FC<LayoutProps> = ({ children }) => {
