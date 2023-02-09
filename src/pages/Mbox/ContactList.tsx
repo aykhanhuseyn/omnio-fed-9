@@ -63,7 +63,7 @@ const SearchInput = styled.input`
   font-size: 14px;
 `;
 
-const ContactList = () => {
+const ContactList = (props: any) => {
 	
   return (
     <Container>
@@ -86,7 +86,7 @@ const ContactList = () => {
       </SearchBox>
 
       {contactList.map((userData) => (
-        <Messages userData={userData} />
+        <Messages userData={userData} setChat={props.setChat} />
       ))}
     </Container>
   );
