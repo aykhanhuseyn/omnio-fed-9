@@ -20,6 +20,7 @@ export const contactList = [
         name: "+11417543010",
         profilePic: "/profile/logan.png",
         iconPic: '/profile/VectorWp.png',
+        profileIcon: '/profile/Facebook.png',
         lastText: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit, accusamus?",
         lastTextTime: "01.01.2050",
       },
