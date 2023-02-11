@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ContactList from "./ContactList";
 import Conversation from "./Conversation";
 import styled from "styled-components";
+
 
 const Container = styled.div`
   display: flex;
@@ -25,7 +26,6 @@ const ChatPlaceholder = styled.img`
   width: 240px;
   height: 240px;
   border-radius: 50%;
-  obeject-fit: contain;
 `;
 
 function index() {

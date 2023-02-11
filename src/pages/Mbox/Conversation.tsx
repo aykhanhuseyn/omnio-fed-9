@@ -1,10 +1,12 @@
 import { useState } from "react";
 import styled from "styled-components";
-import Jeff from "../../../public/profile/jeff.jpeg";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
-import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import { messagesList } from "../../data/userList";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+
 
 const Container = styled.div`
   display: flex;
@@ -113,16 +115,16 @@ const HeaderIcon = styled.img`
   border-radius: 50%;
   width: 15px;
   height: 15px;
-  background-color: #3B5998;
-  border: 3px solid #3B5998;
-`
+  background-color: #3b5998;
+  border: 3px solid #3b5998;
+`;
 
 const IconName = styled.span`
   color: #3b5998;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-weight: 500;
   font-size: 12px;
-`
+`;
 
 const RightSide = styled.div`
   display: flex;
@@ -137,19 +139,11 @@ const BgIcon = styled.div`
 `;
 
 const ProfilePhoto = styled.img`
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
 `;
 
-const ProfileBar = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 5px 30px;
-  border-radius: 12px;
-  background: #f2f4ff;
-`;
 
 const ChatBox = styled.div`
   display: flex;
@@ -219,6 +213,12 @@ const Message = styled.div<{ isYours: boolean }>`
 `;
 
 function Conversation(props: any) {
+  const [user, setUser] = useState("");
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setUser(event.target.value);
+  };
+
   const [isActive, setIsActive] = useState(false);
   const toggleSearch = () => {
     setIsActive(!isActive);
@@ -251,42 +251,68 @@ function Conversation(props: any) {
           <ProfileName>{selectChat.name}</ProfileName>
 
           <HeaderIconDiv>
-           <HeaderIcon src={selectChat.iconPic} />
-           <IconName>
-            Westworld
-           </IconName>
+            <HeaderIcon src={selectChat.iconPic} />
+            <IconName>Westworld</IconName>
           </HeaderIconDiv>
         </ContactInfo>
-     
 
-      <RightSide>
-        <ProfileBar>
-          <ProfilePhoto src={Jeff} />
-          <ProfileName
-            style={{
-              fontWeight: "200",
-              marginRight: "10px",
-              marginBottom: "5px",
-            }}
-          >
-            Dolores Abernathy
-          </ProfileName>
-          <a href="#">
-            <ArrowDropDownOutlinedIcon />
-          </a>
-        </ProfileBar>
+        <RightSide>
+          <FormControl  sx={{ minWidth: 250, border: "none", }} size="small">
+            <Select
+              style={{
+                borderRadius: "25px",
+              }}
+              
+              value={user}
+    
+              onChange={handleChange}
+            >
+              
+              <MenuItem value="Dolores">
+                <ProfilePhoto src="profile/dolores abernathy.png" />
+                <ProfileName
+                  style={{
+                    fontWeight: "200"
+                  }}>
+                  Dolores Abernathy
+                </ProfileName>
+              </MenuItem>
 
-        <BgIcon>
-          <CheckOutlinedIcon />
-        </BgIcon>
+              <MenuItem value="Meave">
+                <ProfilePhoto src="/profile/photo none.jpg" />
+                <ProfileName
+                  style={{
+                    fontWeight: "200",
+                  }}
+                >
+                  Meave Millay
+                </ProfileName>
+              </MenuItem>
+              <MenuItem value="Teddy">
+              <ProfilePhoto src="/profile/photo none.jpg" />
+                <ProfileName
+                  style={{
+                    fontWeight: "200",
+                  }}
+                >
+                  Teddy Flood
+                </ProfileName>
+              </MenuItem>
+            </Select>
+          </FormControl>
 
-        <SearchContainer isSearching={isActive}>
-          <IconButton onClick={toggleSearch}>
-            {isActive ? <SearchIcon /> : <SearchIcon />}
-          </IconButton>
-          <SearchInput type="text" placeholder="Search" />
-        </SearchContainer>
-      </RightSide>
+          
+          <BgIcon>
+            <CheckOutlinedIcon />
+          </BgIcon>
+
+          <SearchContainer isSearching={isActive}>
+            <IconButton onClick={toggleSearch}>
+              {isActive ? <SearchIcon /> : <SearchIcon />}
+            </IconButton>
+            <SearchInput type="text" placeholder="Search" />
+          </SearchContainer>
+        </RightSide>
       </ProfileHeader>
 
       <MessageContainer>

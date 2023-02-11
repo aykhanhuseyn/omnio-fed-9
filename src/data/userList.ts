@@ -35,7 +35,7 @@ export const contactList = [
     {
       id: 5,
       name: "+12417543010",
-      profilePic: "/profile/elon.jpeg",
+      profilePic: "/profile/photo none.jpg",
       iconPic: '/profile/VectorWp.png',
       lastText: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit, accusamus?",
       lastTextTime: "01.01.2050",
@@ -59,7 +59,7 @@ export const contactList = [
       {
         id: 8,
         name: "Lucy Sanders",
-        profilePic: "/profile/jeff.jpeg",
+        profilePic: "/profile/photo none.jpg",
         iconPic: '/profile/Vector.png',
         lastText: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit, accusamus?",
         lastTextTime: "01.01.2050",
