@@ -1,6 +1,8 @@
 import { Button, FormControl, TextField } from "@mui/material";
 import { styled } from "@mui/system";
 import { CSSProperties } from "styled-components"; 
+import {useState} from 'react';
+
 
 interface FlexProps {
   gap?: CSSProperties["gap"];
@@ -20,9 +22,15 @@ const Flex = styled("div")<FlexProps>`
 `;
 
 function SecurityChangePassword() {
+
+    const [pass; setPass] = useState ('')
+    const handleFormSubmit =(e) =>{
+        e.preventDefault()
+        onSubmit (pass)
+    }
   return (
     <>
-      <form>
+      <form onSubmit={handleFormSubmit}>
         <Flex justify="center">
           <FormControl>
             <TextField
@@ -31,6 +39,7 @@ function SecurityChangePassword() {
               name="currentPassword"
               size="small"
               variant="outlined"
+
             >
               {" "}
             </TextField>
@@ -39,12 +48,14 @@ function SecurityChangePassword() {
               size="small"
               variant="outlined"
               placeholder="New password"
+              onChange={(e) =>setPass (e.target.value)}
             ></TextField>
             <TextField
               style={{ marginBottom: "35px" }}
               size="small"
               variant="outlined"
               placeholder="Re-type new password"
+              onChange={(e) =>setPass (e.target.value)}
             ></TextField>
             <Button
               style={{ width: "fit-content", color: "#fff" }}
