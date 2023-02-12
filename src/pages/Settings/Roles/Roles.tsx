@@ -21,7 +21,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
-
 import {
   Button,
   ButtonBase,
@@ -33,24 +32,18 @@ import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import { styled } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
-import { AddModal } from "./AddModal";
-import DeleteModal from "./DeleteModal";
-
-import { userSelector } from "../../../redux/user.slice";
+import DeleteModal from "../Users/DeleteModal";
 import { useSelector } from "react-redux";
 import { roleSelector } from "../../../redux/role.slice";
-import { EditModal } from "./EditModal";
-import SearchModal from "./SearchModal";
+import { AddRoleModal } from "./AddRoleModal";
+import DeleteRoleModal from "./DeleteRoleModal";
+import { EditRoleModal } from "./EditRoleModal";
 interface Data {
-  name: string;
-  surname: string;
-  email: string;
-  username: string;
   role: string;
   action: string;
 }
 
-export const StyledWrapper = styled("div")`
+const StyledWrapper = styled("div")`
   display: flex;
   gap: 12px;
 `;
@@ -75,7 +68,10 @@ type Order = "asc" | "desc";
 function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key
-): (a: { [key in Key]: string }, b: { [key in Key]: string }) => number {
+): (
+  a: { [key in Key]:  string },
+  b: { [key in Key]:  string }
+) => number {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
@@ -109,33 +105,9 @@ interface HeadCell {
 
 const headCells: readonly HeadCell[] = [
   {
-    id: "name",
+    id: "role",
     numeric: false,
     disablePadding: true,
-    label: "Name",
-  },
-  {
-    id: "surname",
-    numeric: true,
-    disablePadding: false,
-    label: "Surname",
-  },
-  {
-    id: "email",
-    numeric: true,
-    disablePadding: false,
-    label: "Email",
-  },
-  {
-    id: "username",
-    numeric: true,
-    disablePadding: false,
-    label: "Username",
-  },
-  {
-    id: "role",
-    numeric: true,
-    disablePadding: false,
     label: "Role",
   },
   {
@@ -206,15 +178,6 @@ interface EnhancedTableToolbarProps {
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const [openSearch, setOpenSearch] = React.useState(false);
-  const handleClickOpenSearch = () => {
-    setOpenSearch(true);
-  };
-  const handleCloseSearch = () => {
-    setOpenSearch(false);
-  };
-
-
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -256,24 +219,16 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           component="div"
           color="#212121"
         >
-          Users
+          Roles
         </Typography>
       )}
       <StyledWrapper>
-        <Button
-          sx={{ color: "#212121", textTransform: "none" }}
-          color="inherit"
-          size="medium"
-          onClick={handleClickOpenSearch}
-
-        >
+        <Button sx={{ color: "#212121", textTransform: "none" }} color='inherit' size="medium">
           <SearchIcon
             sx={{ width: "20px", height: "20px", marginRight: "8px" }}
           />
           Search
         </Button>
-        {openSearch && <SearchModal openSearch={openSearch} handleCloseSearch={handleCloseSearch} />}
-
         <Button
           variant="contained"
           size="medium"
@@ -283,22 +238,24 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           <AddIcon sx={{ width: "20px", height: "20px", marginRight: "8px" }} />
           Add
         </Button>
-        {open && <AddModal open={open} handleClose={handleClose} />}
+        {open && <AddRoleModal open={open} handleClose={handleClose} />}
+
       </StyledWrapper>
     </Toolbar>
   );
 }
 
-export default function Users() {
-  const users = useSelector(userSelector);
+export default function Roles() {
+  const [roleName,setRoleName]=React.useState('')
+  const roles=useSelector(roleSelector)
+  console.log(roles)
   const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("surname");
+  const [orderBy, setOrderBy] = React.useState<keyof Data>("role");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
-
   const handleClickOpenDelete = () => {
     setOpenDelete(true);
   };
@@ -311,6 +268,7 @@ export default function Users() {
   const handleCloseEdit = () => {
     setOpenEdit(false);
   };
+
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -336,7 +294,7 @@ export default function Users() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - roles.length) : 0;
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -349,13 +307,13 @@ export default function Users() {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={users.length}
+              rowCount={roles.length}
             />
             <TableBody>
-              {stableSort(users, getComparator(order, orderBy))
+              {stableSort(roles, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((user, index) => {
-                  const isItemSelected = isSelected(user.name);
+                .map((role, index) => {
+                  const isItemSelected = isSelected(role.role);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -363,7 +321,7 @@ export default function Users() {
                       hover
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={user.name}
+                      key={role.role}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox"></TableCell>
@@ -374,22 +332,11 @@ export default function Users() {
                         padding="none"
                         sx={{ color: "#212121" }}
                       >
-                        {user.name}
-                      </TableCell>
-                      <TableCell align="right" sx={{ color: "#212121" }}>
-                        {user.surname}
-                      </TableCell>
-                      <TableCell align="right" sx={{ color: "#212121" }}>
-                        {user.email}
-                      </TableCell>
-                      <TableCell align="right" sx={{ color: "#212121" }}>
-                        {user.username}
-                      </TableCell>
-                      <TableCell align="right" sx={{ color: "#212121" }}>
-                        {user.role}
+                        {role.role}
                       </TableCell>
                       <TableCell align="right">
-                        <IconButton onClick={handleClickOpenEdit}>
+                        <IconButton
+                         onClick={handleClickOpenEdit}>  
                           <EditIcon
                             sx={{
                               width: "20px",
@@ -399,14 +346,15 @@ export default function Users() {
                           />
                         </IconButton>
                         {openEdit && (
-                          <EditModal
+                          <EditRoleModal
                             openEdit={openEdit}
-                            user={user}
+                            role={role}
                             handleCloseEdit={handleCloseEdit}
                           />
                         )}
 
-                        <IconButton onClick={handleClickOpenDelete}>
+                        <IconButton   
+                          onClick={handleClickOpenDelete}>
                           <DeleteIcon
                             sx={{
                               width: "20px",
@@ -416,9 +364,9 @@ export default function Users() {
                           />
                         </IconButton>
                         {openDelete && (
-                          <DeleteModal
+                          <DeleteRoleModal
                             openDelete={openDelete}
-                            user={user}
+                            role={role}
                             handleCloseDelete={handleCloseDelete}
                           />
                         )}
@@ -433,7 +381,7 @@ export default function Users() {
               )}
             </TableBody>
           </Table>
-          {users.length === 0 && (
+          {roles.length === 0 && (
             <StyledTypography variant="subtitle1">
               There is no data in the table
             </StyledTypography>
@@ -442,7 +390,7 @@ export default function Users() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={users.length}
+          count={roles.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

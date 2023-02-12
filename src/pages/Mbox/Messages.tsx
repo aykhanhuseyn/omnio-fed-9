@@ -1,8 +1,9 @@
 import styled from 'styled-components'
 
 const ContactItem = styled.div`
+position: relative;
     display: flex;
-    flex-directionn: row;
+    flex-direction: row;
     border-bottom: 1px solid #f2f2f2;
     background: #fff;
     cursor: pointer;
@@ -13,11 +14,29 @@ const ContactItem = styled.div`
     }
 `;
 
-const ProfileIcon = styled.img`
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
+const ProfileImage = styled.img`
+    width: 48px;
+    height: 48px;
+    border-radius: 50%; 
 `;
+
+const BgProfileIcon = styled.div` 
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    left: 46px;
+    top: 40px;
+    background-color: #3B5998;
+    border-radius: 50%;
+    border: 3px solid #fff;
+`
+
+const ProfileIcon = styled.img`
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    
+`
 
 const ContactInfo = styled.div`
     display: flex;
@@ -47,11 +66,15 @@ const MessageTime = styled.span`
 
 
 
-const Messages = (props) => {
-    const { userData } = props;
+const Messages = (props: any) => {
+    const { userData, setChat } = props;
     return (
-        <ContactItem>
-            <ProfileIcon src={userData.profilePic} />
+        <ContactItem onClick={() => setChat(userData)} >
+            <ProfileImage src={userData.profilePic} />
+            <BgProfileIcon >
+            <ProfileIcon src={userData.iconPic} />
+            </BgProfileIcon>
+
             <ContactInfo>
                 <ContactName>{userData.name}</ContactName>
                 <MessageText>{userData.lastText}</MessageText>
