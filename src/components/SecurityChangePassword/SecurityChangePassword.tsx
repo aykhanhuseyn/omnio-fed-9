@@ -13,7 +13,7 @@ interface FlexProps {
 }
 const Flex = styled("div")<FlexProps>`
   display: flex;
-  background-color: "#FAFAFA";
+  background-color: "#fafafa";
   padding: "12 0 20 0";
   gap: ${(props) => props.gap || "0"};
   flex-direction: ${(props) => props.direction || "row"};
@@ -23,10 +23,10 @@ const Flex = styled("div")<FlexProps>`
 
 function SecurityChangePassword() {
 
-    const [pass; setPass] = useState ('')
+    const [pass, setPass] = useState ('');
     const handleFormSubmit =(e) =>{
         e.preventDefault()
-        onSubmit (pass)
+        // onSubmit (pass)
     }
   return (
     <>

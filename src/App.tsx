@@ -22,8 +22,8 @@ const SecurityProfile = loadable(
 	() => import('./pages/Profile/SecurityProfile'),
 );
 const ProfileLayout = loadable(() => import('./components/ProfileLayout'));
-const GeneralProfileSettings = loadable(
-	() => import('./pages/Profile/SecurityProfile'),
+const GeneralProfile = loadable(
+	() => import('./pages/Profile/GeneralProfile'),
 );
 
 function App() {
@@ -53,7 +53,7 @@ function App() {
 				</Route>
 				<Route path='profile' element={<ProfileLayout />}>
 					<Route path='security' element={<SecurityProfile />} />
-					<Route path='general' element={<GeneralProfileSettings />} />
+					<Route path='general' element={<GeneralProfile />} />
 				</Route>
 				<Route path='*' element={<Navigate to='/' replace />} />
 			</Routes>
