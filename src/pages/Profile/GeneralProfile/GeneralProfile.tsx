@@ -25,11 +25,11 @@ const Flex = styled("div")<FlexProps>`
   justify-content: ${(props) => props.justify || "flex-start"};
 `;
 function GeneralProfileSettings() {
-  const [isEdit, setisEdit ]=useState(false);
-  const dispatch=useDispatch();
-  const handleChangeEdit = () => {
-    setisEdit (!isEdit);
-  };
+  // const [isEdit, setisEdit ]=useState(false);
+  // const dispatch=useDispatch();
+  // const handleChangeEdit = () => {
+  //   setisEdit (!isEdit);
+  // };
   
   return (
     <StyledDiv>

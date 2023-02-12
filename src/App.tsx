@@ -31,15 +31,15 @@ const GeneralProfile = loadable(
 function App() {
 	const isLoggedIn = useSelector(loginSelector);
 
-	if (!isLoggedIn) {
-		return (
-			<Routes>
-				<Route path='login' element={<Login />} />
-				<Route path='forgot' element={<Forgot />} />
-				<Route path='*' element={<Navigate to='login' replace />} />
-			</Routes>
-		);
-	}
+	// if (!isLoggedIn) {
+	// 	return (
+	// 		<Routes>
+	// 			<Route path='login' element={<Login />} />
+	// 			<Route path='forgot' element={<Forgot />} />
+	// 			<Route path='*' element={<Navigate to='login' replace />} />
+	// 		</Routes>
+	// 	);
+	// }
 
 	return (
 		<Layout>

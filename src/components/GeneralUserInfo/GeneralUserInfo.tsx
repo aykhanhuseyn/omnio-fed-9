@@ -22,7 +22,7 @@ interface FlexProps {
     justify-content: ${(props) => props.justify || "flex-start"};
   `;
 function GeneralUserInfo  () {
-  const userInfo = useSelector((state) =state)
+
   return (
     <Flex 
     justify='space-between'
