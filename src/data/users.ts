@@ -7,5 +7,8 @@ export const users: User[] = [
 		birthDate: '1999-12-12',
 		name: 'Aynur',
 		surname: 'Dadashova',
+		email: 'ay@nur.edu.az',
+		jobTitle: 'Software Engineer',
+		tenant: 'tenant1',
 	},
 ];

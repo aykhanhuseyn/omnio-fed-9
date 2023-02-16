@@ -13,17 +13,18 @@ import {
 import { uniqueId } from 'lodash';
 import type { FormValues } from '../../../models';
 import { useForm } from 'react-hook-form';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addUser } from '../../../redux/user.slice';
-import { roleSelector } from '../../../redux/role.slice';
-interface Props {
-	open: boolean;
-	handleClose: () => void;
+import { useDispatch } from 'react-redux';
+import { editRole } from '../../../redux/role.slice';
+import { editUser } from '../../../redux/user.slice';
+
+interface PropsEdit {
+	openEdit: boolean;
+	handleCloseEdit: () => void;
+	user: any;
 }
 
-export const roles = ['Admin', 'Agent', 'Superviser'];
-export const tenants = ['Admin', 'Agent', 'Superviser'];
+const roles = ['Admin', 'Agent', 'Superviser'];
+const tenants = ['Admin', 'Agent', 'Superviser'];
 
 const passwordSpecialChars = ['!', '@', '#', '$', '%', '&'];
 
@@ -37,12 +38,10 @@ const schema = object().shape({
 		.max(20, 'Username is too long')
 		.required('Username is required'),
 	role: string()
-		.ensure()
-		.oneOf([...roles, undefined])
+		.oneOf(roles, `Rolu must be one of ${roles.join(', ')}`)
 		.required('Role is required'),
 	tenant: string()
-		.ensure()
-		.oneOf([...roles, undefined])
+		.oneOf(roles, `Rolu must be one of ${roles.join(', ')}`)
 		.required('Tenant is required'),
 	password: string()
 		.min(8, 'Password is too short')
@@ -60,7 +59,7 @@ const schema = object().shape({
 		.required('Confirm password is required'),
 });
 
-export const AddModal = ({ open, handleClose }: Props) => {
+export const EditModal = ({ user, openEdit, handleCloseEdit }: PropsEdit) => {
 	const dispatch = useDispatch();
 	const { register, handleSubmit, formState, watch, getValues } =
 		useForm<FormValues>({
@@ -72,8 +71,8 @@ export const AddModal = ({ open, handleClose }: Props) => {
 
 	const onSubmit = (user: any) => {
 		dispatch(
-			addUser({
-				id: uniqueId(),
+			editUser({
+				id: user.id,
 				name: user.name,
 				surname: user.surname,
 				email: user.email,
@@ -84,13 +83,12 @@ export const AddModal = ({ open, handleClose }: Props) => {
 				confirmPassword: user.confirmPassword,
 			}),
 		);
-		handleClose();
+		handleCloseEdit();
 	};
-
 	return (
 		<Dialog
-			open={open}
-			onClose={handleClose}
+			open={openEdit}
+			onClose={handleCloseEdit}
 			aria-labelledby='alert-dialog-title'
 			aria-describedby='alert-dialog-description'
 		>
@@ -113,6 +111,7 @@ export const AddModal = ({ open, handleClose }: Props) => {
 								{...register('name')}
 								error={Boolean(formState?.errors?.name)}
 								helperText={formState?.errors?.name?.message ?? ''}
+								defaultValue={user.name}
 							/>
 							<TextField
 								size='medium'
@@ -123,6 +122,7 @@ export const AddModal = ({ open, handleClose }: Props) => {
 								{...register('surname')}
 								error={Boolean(formState?.errors?.surname)}
 								helperText={formState?.errors?.surname?.message ?? ''}
+								defaultValue={user.surname}
 							/>
 						</div>
 						<div style={{ marginBottom: '28px' }}>
@@ -134,6 +134,7 @@ export const AddModal = ({ open, handleClose }: Props) => {
 								{...register('email')}
 								error={Boolean(formState?.errors?.email)}
 								helperText={formState?.errors?.email?.message ?? ''}
+								defaultValue={user.email}
 							/>
 							<TextField
 								size='medium'
@@ -144,6 +145,7 @@ export const AddModal = ({ open, handleClose }: Props) => {
 								{...register('username')}
 								error={Boolean(formState?.errors?.username)}
 								helperText={formState?.errors?.username?.message ?? ''}
+								defaultValue={user.username}
 							/>
 						</div>
 						<div style={{ display: 'flex', marginBottom: '28px' }}>
@@ -151,6 +153,7 @@ export const AddModal = ({ open, handleClose }: Props) => {
 								disablePortal
 								id='addedRoles'
 								options={roles}
+								defaultValue={user.role}
 								renderInput={(params) => (
 									<TextField
 										{...params}
@@ -167,6 +170,7 @@ export const AddModal = ({ open, handleClose }: Props) => {
 								disablePortal
 								id='addedTenants'
 								options={tenants}
+								defaultValue={user.tenant}
 								renderInput={(params) => (
 									<TextField
 										{...params}
@@ -190,6 +194,7 @@ export const AddModal = ({ open, handleClose }: Props) => {
 								{...register('password')}
 								error={Boolean(formState?.errors?.password)}
 								helperText={formState?.errors?.password?.message ?? ''}
+								defaultValue={user.password}
 							/>
 							<TextField
 								id='confirmPassword'
@@ -200,12 +205,13 @@ export const AddModal = ({ open, handleClose }: Props) => {
 								{...register('confirmPassword')}
 								error={Boolean(formState?.errors?.confirmPassword)}
 								helperText={formState?.errors?.confirmPassword?.message ?? ''}
+								defaultValue={user.confirmPassword}
 							/>
 						</div>
 					</Box>
 				</DialogContent>
 				<DialogActions>
-					<Button color='inherit' onClick={handleClose}>
+					<Button color='inherit' onClick={handleCloseEdit}>
 						Cancel
 					</Button>
 					<Button

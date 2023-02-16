@@ -11,32 +11,33 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import type { MouseEvent } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logOut } from '../../redux/auth.slice';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { CSSProperties } from 'styled-components';
 import { badgeTypes } from '../../data/badgeTypes';
 import { sidebarData } from '../../data/sidebarData';
 
 const settings = ['Profile', 'Log out'];
-interface AsideProps{
-	position:CSSProperties['position'];
-	width:`${number}px`;
-	borderLeft:CSSProperties['borderLeft']
-	padding:CSSProperties['padding']
-	alignItems:CSSProperties['alignItems']
+interface AsideProps {
+	position: CSSProperties['position'];
+	width: `${number}px`;
+	borderLeft: CSSProperties['borderLeft'];
+	padding: CSSProperties['padding'];
+	alignItems: CSSProperties['alignItems'];
 }
 export const StyledAside = styled('aside')<AsideProps>`
 	min-height: 100vh;
-	width: ${props=>props.width ||'84px'};
+	width: ${(props) => props.width || '84px'};
 	background-color: #574b90;
 	display: flex;
 	flex-direction: column;
-	align-items: ${props=>props.alignItems||'center'};
-	padding: ${props=>props.padding||'0'};
-	position: ${props=>props.position ||'fixed'};
+	align-items: ${(props) => props.alignItems || 'center'};
+	padding: ${(props) => props.padding || '0'};
+	position: ${(props) => props.position || 'fixed'};
 	left: 0;
 	top: 0;
-	border-left: ${props=>props.borderLeft||'none'};
-
+	border-left: ${(props) => props.borderLeft || 'none'};
 `;
 
 const StyledOmnio = styled('img')`
@@ -85,6 +86,8 @@ const StyledBadge = styled(Badge)`
 export const Sidebar = () => {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const [selectedIndex, setSelectedIndex] = useState(0);
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const open = Boolean(anchorEl);
 	const handleClickListItem = (event: MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -113,7 +116,13 @@ export const Sidebar = () => {
 	};
 
 	return (
-		<StyledAside position='fixed' width='84px' borderLeft='none' padding='32px 0' alignItems='center'>
+		<StyledAside
+			position='fixed'
+			width='84px'
+			borderLeft='none'
+			padding='32px 0'
+			alignItems='center'
+		>
 			<StyledLink to='/'>
 				<StyledOmnio src='/Omnio_icon_white.png' alt='omnio icon'></StyledOmnio>
 			</StyledLink>
@@ -137,11 +146,24 @@ export const Sidebar = () => {
 				open={Boolean(anchorElUser)}
 				onClose={handleCloseUserMenu}
 			>
-				{settings.map((setting) => (
-					<MenuItem key={setting} onClick={handleCloseUserMenu}>
-						<ListItemText>{setting}</ListItemText>
-					</MenuItem>
-				))}
+				<MenuItem
+					key='profile'
+					onClick={() => {
+						navigate('/profile');
+						handleCloseUserMenu();
+					}}
+				>
+					<ListItemText>Profile</ListItemText>
+				</MenuItem>
+				<MenuItem
+					key='logout'
+					onClick={() => {
+						// window.localStorage.removeItem('token');
+						dispatch(logOut());
+					}}
+				>
+					<ListItemText>Log out</ListItemText>
+				</MenuItem>
 			</Menu>
 			<StyledBadge
 				anchorOrigin={{

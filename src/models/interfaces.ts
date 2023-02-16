@@ -16,15 +16,17 @@ export interface User extends Omit<LoginUser, 'remember'> {
 	name: string;
 	surname: string;
 	birthDate: `${Year}-${Month}-${Day}`;
+	email: `${string}@${string}.${
+		| 'com'
+		| 'net'
+		| 'org'
+		| 'edu.az'
+		| 'gov.az'
+		| 'az'}`;
+	jobTitle: string;
+	tenant: string;
 }
 
-const user: User = {
-	name: '',
-	surname: '',
-	username: '',
-	password: '',
-	birthDate: '1999-11-31',
-};
 export interface FormValues {
 	name: string;
 	surname: string;
@@ -34,4 +36,13 @@ export interface FormValues {
 	tenant: string;
 	password: string;
 	confirmPassword: string;
+}
+
+export interface Users extends FormValues {
+	id: string;
+}
+
+export interface Roles {
+	role: string;
+	id: any;
 }

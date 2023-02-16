@@ -35,6 +35,7 @@ const authSlice = createSlice({
 });
 
 export const loginSelector = (state: RootState) => state.auth.loggedIn;
+export const userSelector = (state: RootState) => state.auth.user;
 
 export const { logIn, logOut } = authSlice.actions;
 
