@@ -1,8 +1,16 @@
+import * as React from 'react'
 import styled from "styled-components";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
 import Messages from "./Messages";
 import { contactList } from "../../data/userList";
+import { useState } from "react";
 
 const Container = styled.div`
   display: flex;
@@ -63,18 +71,84 @@ const SearchInput = styled.input`
   font-size: 14px;
 `;
 
+const options = ["Completed Chats"];
+
 const ContactList = (props: any) => {
-	
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const [value, setValue] = useState("one");
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue);
+  };
+
   return (
     <Container>
       <LogoInfoDiv>
         <Logo>Chats</Logo>
-        <BgDotIcon>
-          <a href="#">
-            <MoreVertOutlinedIcon style={{ fontSize: "25px" }} />
-          </a>
-        </BgDotIcon>
+        <IconButton
+          aria-label="more"
+          id="long-button"
+          aria-controls={open ? "long-menu" : undefined}
+          aria-expanded={open ? "true" : undefined}
+          aria-haspopup="true"
+          onClick={handleClick}
+        >
+          <MoreVertIcon />
+        </IconButton>
+        <Menu
+          id="long-menu"
+          MenuListProps={{
+            "aria-labelledby": "long-button",
+          }}
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          PaperProps={{
+            style: {
+              width: "20ch",
+            },
+          }}
+        >
+          {options.map((option) => (
+            <MenuItem
+              key={option}
+              selected={option === "Completed Chats"}
+              onClick={handleClose}
+            >
+              {option}
+            </MenuItem>
+          ))}
+        </Menu>
       </LogoInfoDiv>
+
+      <Box
+        sx={{
+          width: "100%",
+          bgcolor: "#fff",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          textColor="secondary"
+          indicatorColor="secondary"
+          aria-label="secondary tabs example"
+        >
+          <Tab style={{ marginRight: "65px" }} value="one" label="Active" />
+          <Tab value="two" label="Queue" />
+          
+        </Tabs>
+      </Box>
 
       <SearchBox>
         <SearchContainer>

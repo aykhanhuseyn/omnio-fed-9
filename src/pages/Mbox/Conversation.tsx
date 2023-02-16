@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from '@mui/icons-material/Close';
 import { messagesList } from "../../data/userList";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -308,7 +309,7 @@ function Conversation(props: any) {
 
           <SearchContainer isSearching={isActive}>
             <IconButton onClick={toggleSearch}>
-              {isActive ? <SearchIcon /> : <SearchIcon />}
+              {isActive ? <CloseIcon /> : <SearchIcon />}
             </IconButton>
             <SearchInput type="text" placeholder="Search" />
           </SearchContainer>
