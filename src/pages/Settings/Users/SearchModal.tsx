@@ -20,6 +20,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { roles, tenants } from "./AddModal";
 import DialogActions from "@mui/material/DialogActions";
+import Badge from "@mui/material/Badge/Badge";
 
 interface PropsSearchModal {
   openSearch: boolean;
@@ -48,14 +49,16 @@ export default function SearchModal({
       onClose={handleCloseSearch}
       TransitionComponent={Transition}
     >
-      <DialogTitle sx={{ padding: 0 }} id="alert-dialog-title">
-        {"Search "}
-      </DialogTitle>
-      <StyledWrapper>
-        <Typography variant="subtitle1" component="h6">
-          Clear
-        </Typography>
-      </StyledWrapper>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <DialogTitle sx={{ padding: 0 }} id="alert-dialog-title">
+          {"Search "}
+        </DialogTitle>
+        <StyledWrapper sx={{ alignItems: "center" }}>
+        <Button variant="text" endIcon={<Badge sx={{marginLeft:'8px'}} color="secondary" badgeContent={1}  />}>
+        Clear
+      </Button>
+        </StyledWrapper>
+      </div>
       <form autoComplete="off">
         <Box
           sx={{

@@ -29,7 +29,7 @@ interface AsideProps {
 export const StyledAside = styled('aside')<AsideProps>`
 	min-height: 100vh;
 	width: ${(props) => props.width || '84px'};
-	background-color: #574b90;
+	background-color: ${({theme})=>theme.palette.primary.main};
 	display: flex;
 	flex-direction: column;
 	align-items: ${(props) => props.alignItems || 'center'};

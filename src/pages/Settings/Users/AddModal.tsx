@@ -209,7 +209,6 @@ export const AddModal = ({ open, handleClose }: Props) => {
 						Cancel
 					</Button>
 					<Button
-						sx={{ background: ' #574B90' }}
 						variant='contained'
 						type='submit'
 						autoFocus

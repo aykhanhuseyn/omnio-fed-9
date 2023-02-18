@@ -68,10 +68,7 @@ type Order = "asc" | "desc";
 function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key
-): (
-  a: { [key in Key]:  string },
-  b: { [key in Key]:  string }
-) => number {
+): (a: { [key in Key]: string }, b: { [key in Key]: string }) => number {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
@@ -223,32 +220,33 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         </Typography>
       )}
       <StyledWrapper>
-        <Button sx={{ color: "#212121", textTransform: "none" }} color='inherit' size="medium">
-          <SearchIcon
-            sx={{ width: "20px", height: "20px", marginRight: "8px" }}
-          />
+        <Button
+          startIcon={<SearchIcon />}
+          sx={{ color: "#212121", textTransform: "none" }}
+          color="inherit"
+          size="medium"
+        >
           Search
         </Button>
         <Button
+          startIcon={<AddIcon />}
           variant="contained"
           size="medium"
           sx={{ background: "#574B90" }}
           onClick={handleClickOpen}
         >
-          <AddIcon sx={{ width: "20px", height: "20px", marginRight: "8px" }} />
           Add
         </Button>
         {open && <AddRoleModal open={open} handleClose={handleClose} />}
-
       </StyledWrapper>
     </Toolbar>
   );
 }
 
 export default function Roles() {
-  const [roleName,setRoleName]=React.useState('')
-  const roles=useSelector(roleSelector)
-  console.log(roles)
+  const [roleName, setRoleName] = React.useState("");
+  const roles = useSelector(roleSelector);
+  console.log(roles);
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("role");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
@@ -268,7 +266,6 @@ export default function Roles() {
   const handleCloseEdit = () => {
     setOpenEdit(false);
   };
-
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -335,8 +332,7 @@ export default function Roles() {
                         {role.role}
                       </TableCell>
                       <TableCell align="right">
-                        <IconButton
-                         onClick={handleClickOpenEdit}>  
+                        <IconButton onClick={handleClickOpenEdit}>
                           <EditIcon
                             sx={{
                               width: "20px",
@@ -353,8 +349,7 @@ export default function Roles() {
                           />
                         )}
 
-                        <IconButton   
-                          onClick={handleClickOpenDelete}>
+                        <IconButton onClick={handleClickOpenDelete}>
                           <DeleteIcon
                             sx={{
                               width: "20px",

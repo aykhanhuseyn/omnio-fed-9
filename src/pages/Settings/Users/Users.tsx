@@ -259,8 +259,9 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 					color='inherit'
 					size='medium'
 					onClick={handleClickOpenSearch}
+					startIcon={<SearchIcon />}
+
 				>
-					<SearchIcon sx={{ width: '20px', height: '20px', marginRight: '8px' }} />
 					Search
 				</Button>
 				{openSearch && (
@@ -273,10 +274,9 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 				<Button
 					variant='contained'
 					size='medium'
-					sx={{ background: '#574B90' }}
 					onClick={handleClickOpen}
+					startIcon={<AddIcon />}
 				>
-					<AddIcon sx={{ width: '20px', height: '20px', marginRight: '8px' }} />
 					Add
 				</Button>
 				{open && <AddModal open={open} handleClose={handleClose} />}
@@ -288,7 +288,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 export default function Users() {
 	const users = useSelector(userSelector);
 	const [order, setOrder] = React.useState<Order>('asc');
-	const [orderBy, setOrderBy] = React.useState<keyof Data>('surname');
+	const [orderBy, setOrderBy] = React.useState<keyof Data>('name');
 	const [selected, setSelected] = React.useState<readonly string[]>([]);
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);

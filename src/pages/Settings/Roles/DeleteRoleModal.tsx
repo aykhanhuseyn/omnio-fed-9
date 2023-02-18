@@ -45,7 +45,7 @@ export default function DeleteRoleModal({
             Cancel
           </Button>
           <Button
-            sx={{ background: " #574B90" }}
+            variant="contained"
             color="error"
             onClick={deleteModal}
             autoFocus
