@@ -31,6 +31,8 @@ const userSlice = createSlice({
 			state.users.push(user);
 		},
 
+        //ERROR deleteUser
+
 		deleteUser: (state, { payload }: PayloadAction<Pick<Users, 'id'>>) => {
 			console.log('redux', payload.id);
 			const users = cloneDeep(state.users);
