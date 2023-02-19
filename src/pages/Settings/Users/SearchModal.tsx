@@ -33,7 +33,7 @@ const Transition = React.forwardRef(function Transition(
   ref: React.Ref<unknown>
 ) {
   return (
-    <Slide direction="down" ref={ref} {...props} style={{ height: "300px" }} />
+    <Slide direction="down" ref={ref} {...props} style={{ height: "auto" }} />
   );
 });
 
@@ -53,10 +53,19 @@ export default function SearchModal({
         <DialogTitle sx={{ padding: 0 }} id="alert-dialog-title">
           {"Search "}
         </DialogTitle>
-        <StyledWrapper sx={{ alignItems: "center" }}>
-        <Button variant="text" endIcon={<Badge sx={{marginLeft:'8px'}} color="secondary" badgeContent={1}  />}>
-        Clear
-      </Button>
+        <StyledWrapper sx={{ alignItems: "center", marginRight: "20px" }}>
+          <Button
+            variant="text"
+            endIcon={
+              <Badge
+                sx={{ marginLeft: "8px" }}
+                color="secondary"
+                badgeContent={1}
+              />
+            }
+          >
+            Clear
+          </Button>
         </StyledWrapper>
       </div>
       <form autoComplete="off">
@@ -64,7 +73,7 @@ export default function SearchModal({
           sx={{
             display: "flex",
             gap: "20px",
-            marginBottom: "20px",
+            marginBottom: "32px",
             "& .MuiTextField-root": { m: 1, width: "255px" },
           }}
         >
