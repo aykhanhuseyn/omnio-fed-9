@@ -34,8 +34,8 @@ export interface FormValues {
 	username: string;
 	role: string;
 	tenant: string;
-	password: string;
-	confirmPassword: string;
+	password?: string;
+	confirmPassword?: string;
 }
 
 export interface Users extends FormValues {

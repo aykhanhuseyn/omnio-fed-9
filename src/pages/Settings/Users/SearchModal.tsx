@@ -21,6 +21,10 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { roles, tenants } from "./AddModal";
 import DialogActions from "@mui/material/DialogActions";
 import Badge from "@mui/material/Badge/Badge";
+import { useForm } from "react-hook-form";
+import { FormValues } from "../../../models";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { SubmitHandler } from "react-hook-form/dist/types";
 
 interface PropsSearchModal {
   openSearch: boolean;
@@ -41,6 +45,15 @@ export default function SearchModal({
   openSearch,
   handleCloseSearch,
 }: PropsSearchModal) {
+  const { register, handleSubmit, formState, watch, getValues } =
+  useForm<FormValues>({
+    mode: 'onChange',
+    shouldFocusError: true,
+    reValidateMode: 'onChange',
+  });
+  const onSubmit: SubmitHandler<FormValues> = data => Object.values(data).map((data)=>console.log(data));
+  ;
+
   return (
     <Dialog
       fullScreen
@@ -68,7 +81,7 @@ export default function SearchModal({
           </Button>
         </StyledWrapper>
       </div>
-      <form autoComplete="off">
+      <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <Box
           sx={{
             display: "flex",
@@ -83,6 +96,7 @@ export default function SearchModal({
             label="Name"
             variant="outlined"
             type="text"
+            {...register('name')}
           />
           <TextField
             size="medium"
@@ -90,12 +104,16 @@ export default function SearchModal({
             label="Surname"
             variant="outlined"
             type="text"
+            {...register('surname')}
+
           />
           <TextField
             size="medium"
             id="email"
             label="Email"
             variant="outlined"
+            {...register('email')}
+
           />
           <TextField
             size="medium"
@@ -103,6 +121,8 @@ export default function SearchModal({
             label="Username"
             variant="outlined"
             type="text"
+            {...register('username')}
+
           />
           <Autocomplete
             disablePortal
@@ -114,6 +134,8 @@ export default function SearchModal({
                 label="Role"
                 variant="outlined"
                 id="role"
+                {...register('role')}
+
               />
             )}
           />
@@ -127,12 +149,13 @@ export default function SearchModal({
                 label="Tenant"
                 id="tenant"
                 variant="outlined"
+                {...register('tenant')}
+
               />
             )}
           />
         </Box>
-      </form>
-      <DialogActions>
+        <DialogActions>
         <Button color="inherit" onClick={handleCloseSearch}>
           Cancel
         </Button>
@@ -145,6 +168,7 @@ export default function SearchModal({
           Search
         </Button>
       </DialogActions>
+      </form>
     </Dialog>
   );
 }
