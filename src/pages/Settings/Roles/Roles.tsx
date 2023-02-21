@@ -39,6 +39,7 @@ import { roleSelector } from "../../../redux/role.slice";
 import { AddRoleModal } from "./AddRoleModal";
 import DeleteRoleModal from "./DeleteRoleModal";
 import { EditRoleModal } from "./EditRoleModal";
+import SearchRoleModal from "./SearchRoleModal";
 interface Data {
   role: string;
   action: string;
@@ -183,6 +184,14 @@ interface EnhancedTableToolbarProps {
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
+  const [openSearch, setOpenSearch] = React.useState(false);
+  const handleClickOpenSearch = () => {
+    setOpenSearch(true);
+  };
+  const handleCloseSearch = () => {
+    setOpenSearch(false);
+  };
+
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -240,6 +249,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
             sx={{ color: "#212121", textTransform: "none" }}
             color="inherit"
             size="medium"
+            onClick={handleClickOpenSearch}
           >
             Search
           </Button>
@@ -257,6 +267,10 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
             Add
           </Button>
         )}
+          <SearchRoleModal
+          openSearch={openSearch}
+          handleCloseSearch={handleCloseSearch}
+        />
         <AddRoleModal open={open} handleClose={handleClose} />
       </StyledWrapper>
     </Toolbar>

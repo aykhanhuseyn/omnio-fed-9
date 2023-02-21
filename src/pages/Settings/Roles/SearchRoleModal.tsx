@@ -14,11 +14,10 @@ import Slide from "@mui/material/Slide";
 import "../../../styles/style.css";
 import { TransitionProps } from "@mui/material/transitions";
 import { DialogTitle } from "@mui/material";
-import { StyledWrapper } from "./Users";
+import { StyledWrapper } from "../Users/Users";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { roles, tenants } from "./AddModal";
 import DialogActions from "@mui/material/DialogActions";
 import Badge from "@mui/material/Badge/Badge";
 import { useForm } from "react-hook-form";
@@ -41,7 +40,7 @@ const Transition = React.forwardRef(function Transition(
   );
 });
 
-export default function SearchModal({
+export default function SearchRoleModal({
   openSearch,
   handleCloseSearch,
 }: PropsSearchModal) {
@@ -92,67 +91,11 @@ export default function SearchModal({
         >
           <TextField
             size="medium"
-            id="name"
-            label="Name"
+            id="role"
+            label="Role"
             variant="outlined"
             type="text"
-            {...register('name')}
-          />
-          <TextField
-            size="medium"
-            id="surname"
-            label="Surname"
-            variant="outlined"
-            type="text"
-            {...register('surname')}
-
-          />
-          <TextField
-            size="medium"
-            id="email"
-            label="Email"
-            variant="outlined"
-            {...register('email')}
-
-          />
-          <TextField
-            size="medium"
-            id="username"
-            label="Username"
-            variant="outlined"
-            type="text"
-            {...register('username')}
-
-          />
-          <Autocomplete
-            disablePortal
-            id="addedRoles"
-            options={roles}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Role"
-                variant="outlined"
-                id="role"
-                {...register('role')}
-
-              />
-            )}
-          />
-          <Autocomplete
-            disablePortal
-            id="addedTenants"
-            options={tenants}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Tenant"
-                id="tenant"
-                variant="outlined"
-                {...register('tenant')}
-
-              />
-            )}
+            {...register('role')}
           />
         </Box>
         <DialogActions>

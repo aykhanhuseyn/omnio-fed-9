@@ -14,7 +14,6 @@ interface PropsDeleteModal {
   id: string;
 }
 
-//ERROR
 
 export default function DeleteModal({
   openDelete,
