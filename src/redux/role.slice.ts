@@ -6,7 +6,6 @@ interface State {
   roles: Roles[];
   loading: boolean;
 }
-
 const initialState: State = {
   roles: [],
   loading: false,

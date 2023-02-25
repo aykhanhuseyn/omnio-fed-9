@@ -12,25 +12,15 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
 import IconButton, { IconButtonTypeMap } from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 
 import {
   Button,
-  ButtonBase,
-  ExtendButtonBase,
-  Icon,
   Skeleton,
-  SvgIconTypeMap,
 } from "@mui/material";
-import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import { styled } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
@@ -42,12 +32,8 @@ import { useSelector } from "react-redux";
 import { roleSelector } from "../../../redux/role.slice";
 import { EditModal } from "./EditModal";
 import SearchModal from "./SearchModal";
-interface Data {
-  name: string;
-  surname: string;
-  email: string;
-  username: string;
-  role: string;
+import type { Users } from "../../../models";
+interface Data extends Users {
   action: string;
 }
 
@@ -275,7 +261,6 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           <Skeleton variant="rounded" width="88px" height="36px" />
         ) : (
           <Button
-            sx={{ color: "#212121", textTransform: "none" }}
             color="inherit"
             size="medium"
             onClick={handleClickOpenSearch}
@@ -367,7 +352,7 @@ export default function Users() {
       <EnhancedTableToolbar numSelected={selected.length} loading={loading} />
       <Paper sx={{ width: "100%", mb: 2 }}>
         <TableContainer>
-          <Table sx={{ minWidth: 1050 }} aria-labelledby="tableTitle">
+          <Table sx={{ minWidth: 1500 }} aria-labelledby="tableTitle">
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}

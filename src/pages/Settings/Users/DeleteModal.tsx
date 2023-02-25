@@ -28,7 +28,6 @@ export default function DeleteModal({
   };
   console.log;
   return (
-    <div>
       <Dialog
         open={openDelete}
         onClose={handleCloseDelete}
@@ -55,6 +54,5 @@ export default function DeleteModal({
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
   );
 }

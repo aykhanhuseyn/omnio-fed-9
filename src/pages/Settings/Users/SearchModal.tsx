@@ -1,15 +1,6 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import ListItemText from "@mui/material/ListItemText";
-import ListItem from "@mui/material/ListItem";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import "../../../styles/style.css";
 import { TransitionProps } from "@mui/material/transitions";
@@ -23,7 +14,6 @@ import DialogActions from "@mui/material/DialogActions";
 import Badge from "@mui/material/Badge/Badge";
 import { useForm } from "react-hook-form";
 import { FormValues } from "../../../models";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler } from "react-hook-form/dist/types";
 
 interface PropsSearchModal {
@@ -46,14 +36,12 @@ export default function SearchModal({
   handleCloseSearch,
 }: PropsSearchModal) {
   const { register, handleSubmit, formState, watch, getValues } =
-  useForm<FormValues>({
-    mode: 'onChange',
-    shouldFocusError: true,
-    reValidateMode: 'onChange',
-  });
-  const onSubmit: SubmitHandler<FormValues> = data => console.log(data);
-  ;
-
+    useForm<FormValues>({
+      mode: "onChange",
+      shouldFocusError: true,
+      reValidateMode: "onChange",
+    });
+  const onSubmit: SubmitHandler<FormValues> = (data) => console.log(data);
   return (
     <Dialog
       fullScreen
@@ -72,7 +60,7 @@ export default function SearchModal({
             endIcon={
               <Badge
                 sx={{ marginLeft: "8px" }}
-                color="secondary"
+                color="primary"
                 badgeContent={1}
               />
             }
@@ -85,8 +73,8 @@ export default function SearchModal({
         <Box
           sx={{
             display: "flex",
-            gap: "20px",
-            marginBottom: "32px",
+            gap: "26px 3%",
+            flexWrap: "wrap",
             "& .MuiTextField-root": { m: 1, width: "255px" },
           }}
         >
@@ -96,7 +84,7 @@ export default function SearchModal({
             label="Name"
             variant="outlined"
             type="text"
-            {...register('name')}
+            {...register("name")}
           />
           <TextField
             size="medium"
@@ -104,16 +92,14 @@ export default function SearchModal({
             label="Surname"
             variant="outlined"
             type="text"
-            {...register('surname')}
-
+            {...register("surname")}
           />
           <TextField
             size="medium"
             id="email"
             label="Email"
             variant="outlined"
-            {...register('email')}
-
+            {...register("email")}
           />
           <TextField
             size="medium"
@@ -121,8 +107,7 @@ export default function SearchModal({
             label="Username"
             variant="outlined"
             type="text"
-            {...register('username')}
-
+            {...register("username")}
           />
           <Autocomplete
             disablePortal
@@ -134,8 +119,7 @@ export default function SearchModal({
                 label="Role"
                 variant="outlined"
                 id="role"
-                {...register('role')}
-
+                {...register("role")}
               />
             )}
           />
@@ -149,25 +133,19 @@ export default function SearchModal({
                 label="Tenant"
                 id="tenant"
                 variant="outlined"
-                {...register('tenant')}
-
+                {...register("tenant")}
               />
             )}
           />
         </Box>
         <DialogActions>
-        <Button color="inherit" onClick={handleCloseSearch}>
-          Cancel
-        </Button>
-        <Button
-          sx={{ background: " #574B90" }}
-          variant="contained"
-          type="submit"
-          autoFocus
-        >
-          Search
-        </Button>
-      </DialogActions>
+          <Button color="inherit" onClick={handleCloseSearch}>
+            Cancel
+          </Button>
+          <Button color="primary" variant="contained" type="submit" autoFocus>
+            Search
+          </Button>
+        </DialogActions>
       </form>
     </Dialog>
   );
