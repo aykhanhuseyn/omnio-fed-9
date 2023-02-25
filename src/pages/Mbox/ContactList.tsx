@@ -12,6 +12,7 @@ import Messages from "./Messages";
 import { contactList } from "../../data/userList";
 import { useState } from "react";
 
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -35,11 +36,6 @@ const Logo = styled.div`
   font-weight: 500;
 `;
 
-const BgDotIcon = styled.div`
-  padding: 7px;
-  background: #f2f4ff;
-  border-radius: 50%;
-`;
 
 const SearchBox = styled.div`
   display: flex;
@@ -129,6 +125,7 @@ const ContactList = (props: any) => {
         </Menu>
       </LogoInfoDiv>
 
+     
       <Box
         sx={{
           width: "100%",
@@ -146,7 +143,8 @@ const ContactList = (props: any) => {
         >
           <Tab style={{ marginRight: "65px" }} value="one" label="Active" />
           <Tab value="two" label="Queue" />
-          
+            
+         
         </Tabs>
       </Box>
 
@@ -162,6 +160,7 @@ const ContactList = (props: any) => {
       {contactList.map((userData) => (
         <Messages userData={userData} setChat={props.setChat} />
       ))}
+     
     </Container>
   );
 };

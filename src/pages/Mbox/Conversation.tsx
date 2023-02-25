@@ -7,6 +7,7 @@ import { messagesList } from "../../data/userList";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Picker from 'emoji-picker-react'
 
 
 const Container = styled.div`
@@ -84,7 +85,7 @@ const IconButton = styled.button`
   background: none;
 
   &:hover {
-    color: #fff;
+    opacity: 0.4;
     &::after {
       opacity: 1;
       transform: scale(1);
@@ -193,8 +194,9 @@ const MessageContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: #f5f5f5;
+  background: #FAFAFA;
   overflow-y: auto;
+
 `;
 
 const MessageDiv = styled.div<{ isYours: boolean }>`
@@ -207,11 +209,19 @@ const Message = styled.div<{ isYours: boolean }>`
   background: ${(props) => (props.isYours ? "#574B90" : "#EEE3F4")};
   max-width: 50%;
   color: #303030;
-  padding: 8px 10px;
+  padding: 35px 16px;
   font-size: 14px;
-  border-radius: 4px;
+  border-radius: 12px 12px 0px 12px;
   color: ${(props) => (props.isYours ? "#fff" : "#000")};
 `;
+
+const MessageTime = styled.p`
+    margin-top: 60px;
+    font-size: 12px;
+    color: gray;
+  
+`
+
 
 function Conversation(props: any) {
   const [user, setUser] = useState("");
@@ -226,7 +236,7 @@ function Conversation(props: any) {
   };
 
   const { selectChat } = props;
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
   const [messageList, setMessageList] = useState(messagesList);
   // const onEmojiClick = (event, emoji) => {}
   const onEnterPress = (event: any) => {
@@ -238,9 +248,10 @@ function Conversation(props: any) {
         text,
         senderID: 0,
         addedOn: "12.02 PM",
+        
       });
       setMessageList(messages);
-      setText("");
+      setText('');
     }
   };
 
@@ -252,8 +263,9 @@ function Conversation(props: any) {
           <ProfileName>{selectChat.name}</ProfileName>
 
           <HeaderIconDiv>
+        
             <HeaderIcon src={selectChat.iconPic} />
-            <IconName>Westworld</IconName>
+            <IconName>{selectChat.profileText}</IconName>
           </HeaderIconDiv>
         </ContactInfo>
 
@@ -268,7 +280,7 @@ function Conversation(props: any) {
     
               onChange={handleChange}
             >
-              
+          
               <MenuItem value="Dolores">
                 <ProfilePhoto src="profile/dolores abernathy.png" />
                 <ProfileName
@@ -278,6 +290,7 @@ function Conversation(props: any) {
                   Dolores Abernathy
                 </ProfileName>
               </MenuItem>
+             
 
               <MenuItem value="Meave">
                 <ProfilePhoto src="/profile/photo none.jpg" />
@@ -302,11 +315,11 @@ function Conversation(props: any) {
             </Select>
           </FormControl>
 
-          
           <BgIcon>
+          <IconButton>
             <CheckOutlinedIcon />
+          </IconButton>
           </BgIcon>
-
           <SearchContainer isSearching={isActive}>
             <IconButton onClick={toggleSearch}>
               {isActive ? <CloseIcon /> : <SearchIcon />}
@@ -317,11 +330,13 @@ function Conversation(props: any) {
       </ProfileHeader>
 
       <MessageContainer>
-        {messagesList.map((messageData) => (
+        {messageList.map((messageData) => (
           <MessageDiv isYours={messageData.senderID === 0}>
             <Message isYours={messageData.senderID === 0}>
               {messageData.text}
+              
             </Message>
+            <MessageTime>{messageData.addedOn}</MessageTime>
           </MessageDiv>
         ))}
       </MessageContainer>

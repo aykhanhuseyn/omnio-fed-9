@@ -13,6 +13,8 @@ const Forgot = loadable(() => import('./pages/Login'));
 
 const Dashboard = loadable(() => import('./pages/Dashboard'));
 const Mbox = loadable(() => import('./pages/Mbox'));
+const Queue = loadable(() => import('./pages/Mbox/Queue'));
+
 
 const Settings = loadable(() => import('./pages/Settings/Settings'));
 const Users = loadable(() => import('./pages/Settings/Users/Users'));
