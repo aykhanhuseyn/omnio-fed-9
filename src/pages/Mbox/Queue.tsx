@@ -10,7 +10,7 @@ position: relative;
     padding: 16px 12px;
 
     &:hover{
-        background: #f0f0f0;
+        background: #000;
     }
 `;
 
@@ -66,7 +66,7 @@ const MessageTime = styled.span`
 
 
 
-const Messages = (props: any) => {
+const Queue = (props: any) => {
     const { userData, setChat } = props;
     return (
         <ContactItem onClick={() => setChat(userData)} >
@@ -79,10 +79,10 @@ const Messages = (props: any) => {
                 <ContactName>{userData.name}</ContactName>
                 <MessageText>{userData.lastText}</MessageText>
             </ContactInfo>
-                <MessageTime>{userData.lastTextTime}</MessageTime>
+                
 
         </ContactItem>
     )
 }
 
-export default Messages
+export default Queue
