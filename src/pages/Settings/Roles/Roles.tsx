@@ -26,6 +26,7 @@ import {
   ButtonBase,
   ExtendButtonBase,
   Icon,
+  Skeleton,
   SvgIconTypeMap,
 } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
@@ -38,6 +39,7 @@ import { roleSelector } from "../../../redux/role.slice";
 import { AddRoleModal } from "./AddRoleModal";
 import DeleteRoleModal from "./DeleteRoleModal";
 import { EditRoleModal } from "./EditRoleModal";
+import SearchRoleModal from "./SearchRoleModal";
 interface Data {
   role: string;
   action: string;
@@ -68,10 +70,7 @@ type Order = "asc" | "desc";
 function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key
-): (
-  a: { [key in Key]:  string },
-  b: { [key in Key]:  string }
-) => number {
+): (a: { [key in Key]: string }, b: { [key in Key]: string }) => number {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
@@ -127,10 +126,11 @@ interface EnhancedTableProps {
   order: Order;
   orderBy: string;
   rowCount: number;
+  loading: boolean;
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-  const { order, orderBy, onRequestSort } = props;
+  const { order, orderBy, onRequestSort, loading } = props;
   const createSortHandler =
     (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
@@ -139,16 +139,21 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox"></TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
             sx={{ color: "#616161" }}
           >
-            {headCell.id === "action" ? (
+            {loading ? (
+              <Skeleton
+                sx={{ display: "inline-block" }}
+                animation="wave"
+                width="40px"
+                variant="text"
+              />
+            ) : headCell.id === "action" ? (
               headCell.label
             ) : (
               <TableSortLabel
@@ -175,9 +180,18 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
+  loading: boolean;
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
+  const [openSearch, setOpenSearch] = React.useState(false);
+  const handleClickOpenSearch = () => {
+    setOpenSearch(true);
+  };
+  const handleCloseSearch = () => {
+    setOpenSearch(false);
+  };
+
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -186,7 +200,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     setOpen(false);
   };
 
-  const { numSelected } = props;
+  const { numSelected, loading } = props;
 
   return (
     <Toolbar
@@ -219,36 +233,54 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           component="div"
           color="#212121"
         >
-          Roles
+          {loading ? (
+            <Skeleton variant="text" width="180px" animation="wave" />
+          ) : (
+            "Roles"
+          )}
         </Typography>
       )}
       <StyledWrapper>
-        <Button sx={{ color: "#212121", textTransform: "none" }} color='inherit' size="medium">
-          <SearchIcon
-            sx={{ width: "20px", height: "20px", marginRight: "8px" }}
-          />
-          Search
-        </Button>
-        <Button
-          variant="contained"
-          size="medium"
-          sx={{ background: "#574B90" }}
-          onClick={handleClickOpen}
-        >
-          <AddIcon sx={{ width: "20px", height: "20px", marginRight: "8px" }} />
-          Add
-        </Button>
-        {open && <AddRoleModal open={open} handleClose={handleClose} />}
-
+        {loading ? (
+          <Skeleton variant="rounded" width="88px" height="36px" />
+        ) : (
+          <Button
+            startIcon={<SearchIcon />}
+            sx={{ color: "#212121", textTransform: "none" }}
+            color="inherit"
+            size="medium"
+            onClick={handleClickOpenSearch}
+          >
+            Search
+          </Button>
+        )}
+        {loading ? (
+          <Skeleton variant="rounded" width="88px" height="36px" />
+        ) : (
+          <Button
+            startIcon={<AddIcon />}
+            variant="contained"
+            size="medium"
+            sx={{ background: "#574B90" }}
+            onClick={handleClickOpen}
+          >
+            Add
+          </Button>
+        )}
+          <SearchRoleModal
+          openSearch={openSearch}
+          handleCloseSearch={handleCloseSearch}
+        />
+        <AddRoleModal open={open} handleClose={handleClose} />
       </StyledWrapper>
     </Toolbar>
   );
 }
 
 export default function Roles() {
-  const [roleName,setRoleName]=React.useState('')
-  const roles=useSelector(roleSelector)
-  console.log(roles)
+  const [roleName, setRoleName] = React.useState("");
+  const roles = useSelector(roleSelector);
+  console.log(roles);
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("role");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
@@ -256,6 +288,13 @@ export default function Roles() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+  React.useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
   const handleClickOpenDelete = () => {
     setOpenDelete(true);
   };
@@ -268,7 +307,6 @@ export default function Roles() {
   const handleCloseEdit = () => {
     setOpenEdit(false);
   };
-
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -298,7 +336,7 @@ export default function Roles() {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <EnhancedTableToolbar numSelected={selected.length} />
+      <EnhancedTableToolbar numSelected={selected.length} loading={loading} />
       <Paper sx={{ width: "100%", mb: 2 }}>
         <TableContainer>
           <Table sx={{ minWidth: 1050 }} aria-labelledby="tableTitle">
@@ -308,6 +346,7 @@ export default function Roles() {
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
               rowCount={roles.length}
+              loading={loading}
             />
             <TableBody>
               {stableSort(roles, getComparator(order, orderBy))
@@ -324,52 +363,61 @@ export default function Roles() {
                       key={role.role}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox"></TableCell>
                       <TableCell
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="none"
                         sx={{ color: "#212121" }}
                       >
-                        {role.role}
+                        {loading ? (
+                          <Skeleton
+                            sx={{ display: "inline-block" }}
+                            animation="wave"
+                            width="88px"
+                          />
+                        ) : (
+                          role.role
+                        )}
                       </TableCell>
                       <TableCell align="right">
-                        <IconButton
-                         onClick={handleClickOpenEdit}>  
-                          <EditIcon
-                            sx={{
-                              width: "20px",
-                              height: "20px",
-                              color: "#616161",
-                            }}
+                        {loading ? (
+                          <Skeleton
+                            sx={{ display: "inline-block" }}
+                            animation="wave"
+                            width="88px"
                           />
-                        </IconButton>
-                        {openEdit && (
-                          <EditRoleModal
-                            openEdit={openEdit}
-                            role={role}
-                            handleCloseEdit={handleCloseEdit}
-                          />
+                        ) : (
+                          <>
+                            <IconButton onClick={handleClickOpenEdit}>
+                              <EditIcon
+                                sx={{
+                                  width: "20px",
+                                  height: "20px",
+                                  color: "#616161",
+                                }}
+                              />
+                            </IconButton>
+                            <IconButton onClick={handleClickOpenDelete}>
+                              <DeleteIcon
+                                sx={{
+                                  width: "20px",
+                                  height: "20px",
+                                  color: "#616161",
+                                }}
+                              />
+                            </IconButton>
+                          </>
                         )}
-
-                        <IconButton   
-                          onClick={handleClickOpenDelete}>
-                          <DeleteIcon
-                            sx={{
-                              width: "20px",
-                              height: "20px",
-                              color: "#616161",
-                            }}
-                          />
-                        </IconButton>
-                        {openDelete && (
-                          <DeleteRoleModal
-                            openDelete={openDelete}
-                            role={role}
-                            handleCloseDelete={handleCloseDelete}
-                          />
-                        )}
+                        <EditRoleModal
+                          openEdit={openEdit}
+                          role={role}
+                          handleCloseEdit={handleCloseEdit}
+                        />
+                        <DeleteRoleModal
+                          openDelete={openDelete}
+                          role={role}
+                          handleCloseDelete={handleCloseDelete}
+                        />
                       </TableCell>
                     </TableRow>
                   );
@@ -383,7 +431,16 @@ export default function Roles() {
           </Table>
           {roles.length === 0 && (
             <StyledTypography variant="subtitle1">
-              There is no data in the table
+              {loading ? (
+                <Skeleton
+                  sx={{ display: "inline-block" }}
+                  width="200px"
+                  variant="rounded"
+                  animation="wave"
+                />
+              ) : (
+                "There is no data in the table"
+              )}
             </StyledTypography>
           )}
         </TableContainer>

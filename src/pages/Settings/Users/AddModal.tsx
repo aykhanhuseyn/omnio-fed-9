@@ -67,7 +67,7 @@ export const AddModal = ({ open, handleClose }: Props) => {
 			mode: 'onChange',
 			shouldFocusError: true,
 			reValidateMode: 'onChange',
-			// resolver: yupResolver(schema),
+			resolver: yupResolver(schema),
 		});
 
 	const onSubmit = (user: any) => {
@@ -209,7 +209,6 @@ export const AddModal = ({ open, handleClose }: Props) => {
 						Cancel
 					</Button>
 					<Button
-						sx={{ background: ' #574B90' }}
 						variant='contained'
 						type='submit'
 						autoFocus

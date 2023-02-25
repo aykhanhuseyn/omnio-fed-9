@@ -53,7 +53,7 @@ export const AddRoleModal = ({ open, handleClose }: Props) => {
       aria-describedby="alert-dialog-description"
     >
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-        <DialogTitle id="alert-dialog-title">{"Add , Edit user "}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Add , Edit role "}</DialogTitle>
         <DialogContent>
           <Box
             sx={{
