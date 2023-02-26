@@ -1,19 +1,18 @@
 import { useState } from 'react';
+import { find } from 'lodash';
 import styled from 'styled-components';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import {
 	ContactListUser,
 	messagesList,
 	messengerData,
 } from '../../data/userList';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Picker from 'emoji-picker-react';
-import { type } from 'os';
-import { find } from 'lodash';
 
 // components/shared/Container.tsx
 // components/MBox/Container.tsx
@@ -68,7 +67,10 @@ const ProfileName = styled.span`
 	margin: 10px 5px;
 `;
 
-const SearchContainer = styled.div`
+type SearchContainerProps = {
+	isSearching: boolean;
+};
+const SearchContainer = styled.div<SearchContainerProps>`
 	position: relative;
 	width: ${(props) => (props.isSearching ? 360 : 48)}px;
 	height: 48px;
