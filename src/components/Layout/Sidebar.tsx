@@ -8,6 +8,8 @@ import {
 	ListItemIcon,
 	ListItemText,
 	styled,
+	TooltipProps,
+	tooltipClasses,
 } from '@mui/material';
 import { useState } from 'react';
 import type { MouseEvent } from 'react';
@@ -17,6 +19,18 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { CSSProperties } from 'styled-components';
 import { badgeTypes } from '../../data/badgeTypes';
 import { sidebarData } from '../../data/sidebarData';
+
+const PurpleTooltip = styled(({ className, ...props }: TooltipProps) => (
+	<Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+	[`& .${tooltipClasses.tooltip}`]: {
+		padding: 12,
+		backgroundColor: '#EEE3F4',
+		color: '#574B90',
+		boxShadow: theme.shadows[1],
+		fontSize: 11,
+	},
+}));
 
 const settings = ['Profile', 'Log out'];
 interface AsideProps {
@@ -29,7 +43,7 @@ interface AsideProps {
 export const StyledAside = styled('aside')<AsideProps>`
 	min-height: 100vh;
 	width: ${(props) => props.width || '84px'};
-	background-color: ${({theme})=>theme.palette.primary.main};
+	background-color: ${({ theme }) => theme.palette.primary.main};
 	display: flex;
 	flex-direction: column;
 	align-items: ${(props) => props.alignItems || 'center'};
@@ -206,11 +220,11 @@ export const Sidebar = () => {
 			</Menu>
 			<StyledNav>
 				{sidebarData.map((nav) => (
-					<Tooltip placement='right' key={nav.key} title={nav.title}>
+					<PurpleTooltip placement='right' key={nav.key} title={nav.title}>
 						<StyledNavLink to={nav.link}>
 							<nav.icon sx={{ fontSize: 32, color: '#fff' }} />
 						</StyledNavLink>
-					</Tooltip>
+					</PurpleTooltip>
 				))}
 			</StyledNav>
 		</StyledAside>

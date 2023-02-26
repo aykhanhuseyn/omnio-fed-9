@@ -8,11 +8,13 @@ import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './theme/theme';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-	<Provider store={store}>
-		<BrowserRouter>
-			<ThemeProvider theme={theme}>
-				<App />
-			</ThemeProvider>
-		</BrowserRouter>
-	</Provider>,
+	<React.StrictMode>
+		<Provider store={store}>
+			<BrowserRouter>
+				<ThemeProvider theme={theme}>
+					<App />
+				</ThemeProvider>
+			</BrowserRouter>
+		</Provider>
+	</React.StrictMode>,
 );
