@@ -317,7 +317,6 @@ function Conversation(props: { selectChat: ContactListUser }) {
 									Dolores Abernathy
 								</ProfileName>
 							</MenuItem>
-
 							<MenuItem value='Meave'>
 								<ProfilePhoto src='/profile/photo none.jpg' />
 								<ProfileName
