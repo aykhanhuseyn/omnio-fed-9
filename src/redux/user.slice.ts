@@ -31,11 +31,11 @@ const userSlice = createSlice({
 			state.users.push(user);
 		},
 
-//ERROR deleteUser
+		//ERROR deleteUser
 		deleteUser: (state, { payload }: PayloadAction<Pick<Users, 'id'>>) => {
 			console.log('redux', payload.id);
 			const users = cloneDeep(state.users);
-			return { ...state, users: users.filter((user) => user.id !== payload.id) };
+			return { ...state, users: users.filter((user) => user.id != payload.id) };
 		},
 		editUser: (state, { payload }: PayloadAction<Users>) => {
 			const index = findIndex(state.users, { id: payload.id });
