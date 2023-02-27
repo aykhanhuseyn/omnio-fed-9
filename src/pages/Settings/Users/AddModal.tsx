@@ -68,7 +68,7 @@ export const AddModal = ({ open, handleClose }: Props) => {
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
   const dispatch = useDispatch();
-  const { register, handleSubmit, formState, watch, getValues } =
+  const { register, handleSubmit, formState, reset } =
     useForm<FormValues>({
       mode: "onChange",
       shouldFocusError: true,
@@ -90,6 +90,7 @@ export const AddModal = ({ open, handleClose }: Props) => {
         confirmPassword: user.confirmPassword,
       })
     );
+    reset()
     handleClose();
   };
 
