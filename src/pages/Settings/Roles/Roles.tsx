@@ -12,28 +12,18 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton, { IconButtonTypeMap } from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
+import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import {
   Button,
-  ButtonBase,
-  ExtendButtonBase,
-  Icon,
   Skeleton,
-  SvgIconTypeMap,
 } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import { styled } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
-import DeleteModal from "../Users/DeleteModal";
 import { useSelector } from "react-redux";
 import { roleSelector } from "../../../redux/role.slice";
 import { AddRoleModal } from "./AddRoleModal";
@@ -52,7 +42,7 @@ const StyledWrapper = styled("div")`
 const StyledTypography = styled(Typography)`
   margin: 28px;
   text-align: center;
-  color: #574b90;
+  color:${({theme})=>theme.palette.primary.main};
 `;
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -246,7 +236,6 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         ) : (
           <Button
             startIcon={<SearchIcon />}
-            sx={{ color: "#212121", textTransform: "none" }}
             color="inherit"
             size="medium"
             onClick={handleClickOpenSearch}
@@ -261,7 +250,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
             startIcon={<AddIcon />}
             variant="contained"
             size="medium"
-            sx={{ background: "#574B90" }}
+            color="primary"
             onClick={handleClickOpen}
           >
             Add
@@ -278,7 +267,6 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 }
 
 export default function Roles() {
-  const [roleName, setRoleName] = React.useState("");
   const roles = useSelector(roleSelector);
   console.log(roles);
   const [order, setOrder] = React.useState<Order>("asc");
@@ -339,7 +327,7 @@ export default function Roles() {
       <EnhancedTableToolbar numSelected={selected.length} loading={loading} />
       <Paper sx={{ width: "100%", mb: 2 }}>
         <TableContainer>
-          <Table sx={{ minWidth: 1050 }} aria-labelledby="tableTitle">
+          <Table sx={{ minWidth: 1500 }} aria-labelledby="tableTitle">
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}

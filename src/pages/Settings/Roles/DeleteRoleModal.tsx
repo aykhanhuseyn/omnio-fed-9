@@ -6,9 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useDispatch } from "react-redux";
-import { deleteUser } from "../../../redux/user.slice";
 import { deleteRole } from "../../../redux/role.slice";
-import { Roles } from "../../../models";
 interface PropsDeleteModal {
   openDelete: boolean;
   handleCloseDelete: () => void;

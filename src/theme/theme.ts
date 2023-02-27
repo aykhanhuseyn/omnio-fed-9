@@ -18,22 +18,27 @@ export const theme = createTheme({
         white:"#FFFFFF"
       },
       text:{
-        primary:"#212121"
+        primary:"#212121",
       },
       success:{
         main:"#4CAF50",
-        light:"#66BB6A"
-
+        light:"#66BB6A",
+        contrastText:'#fff'
       },
       error:{
-        main:"#F44336;"
+        main:"#F44336",
+        contrastText:'#fff'
       },
       warning:{
         main:"#FF9800",
-        light:"#FFA726"
+        light:"#FFA726",
+        contrastText:'#fff'
+
       },
       info:{
-        main:"#03A9F4"
+        main:"#03A9F4",
+        contrastText:'#fff'
+
       },
       grey:{
         500:"#9E9E9E",
