@@ -1,4 +1,4 @@
-import Jeff from '../../public/profile/jeff.jpeg'
+
 
 export enum Messenger {
 	WHATSAPP = 'Whatsapp',
