@@ -88,8 +88,9 @@ export const EditModal = ({ user, handleClose }: PropsEdit) => {
 				confirmPassword: fromSubmitData.confirmPassword,
 			}),
 		);
-		reset();
 		handleClose();
+		reset();
+
 	};
 
 	return (

@@ -90,8 +90,8 @@ export const AddModal = ({ open, handleClose }: Props) => {
         confirmPassword: user.confirmPassword,
       })
     );
-    reset()
     handleClose();
+    reset()
   };
 
   return (

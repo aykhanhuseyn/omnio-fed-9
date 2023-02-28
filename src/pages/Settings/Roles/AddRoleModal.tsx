@@ -27,14 +27,15 @@ const schema = object().shape({
 
 export const AddRoleModal = ({ open, handleClose }: AddRoleModalProps) => {
   const dispatch = useDispatch();
-  const { register, handleSubmit, formState, watch, getValues } =
+  const { register, handleSubmit, formState, reset } =
     useForm<FormValues>({
       mode: "onChange",
       shouldFocusError: true,
       reValidateMode: "onChange",
       resolver: yupResolver(schema),
     });
-
+  
+  
   const onSubmit = (role: any) => {
     dispatch(
       addRole({
@@ -43,6 +44,7 @@ export const AddRoleModal = ({ open, handleClose }: AddRoleModalProps) => {
       })
     );
     handleClose();
+    reset()
   };
   return (
     <Dialog
@@ -81,3 +83,4 @@ export const AddRoleModal = ({ open, handleClose }: AddRoleModalProps) => {
     </Dialog>
   );
 };
+

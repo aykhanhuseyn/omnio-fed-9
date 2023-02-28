@@ -16,11 +16,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { visuallyHidden } from "@mui/utils";
-import {
-  Button,
-  Skeleton,
-} from "@mui/material";
-import type { OverridableComponent } from "@mui/material/OverridableComponent";
+import { Button, Skeleton } from "@mui/material";
 import { styled } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
@@ -30,8 +26,8 @@ import { AddRoleModal } from "./AddRoleModal";
 import DeleteRoleModal from "./DeleteRoleModal";
 import { EditRoleModal } from "./EditRoleModal";
 import SearchRoleModal from "./SearchRoleModal";
-interface Data {
-  role: string;
+import type { Roles } from "../../../models";
+interface Data extends Roles {
   action: string;
 }
 
@@ -42,7 +38,7 @@ const StyledWrapper = styled("div")`
 const StyledTypography = styled(Typography)`
   margin: 28px;
   text-align: center;
-  color:${({theme})=>theme.palette.primary.main};
+  color: ${({ theme }) => theme.palette.primary.main};
 `;
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -256,7 +252,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
             Add
           </Button>
         )}
-          <SearchRoleModal
+        <SearchRoleModal
           openSearch={openSearch}
           handleCloseSearch={handleCloseSearch}
         />
@@ -268,14 +264,13 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 
 export default function Roles() {
   const roles = useSelector(roleSelector);
-  console.log(roles);
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("role");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [openDelete, setOpenDelete] = React.useState(false);
-  const [openEdit, setOpenEdit] = React.useState(false);
+  const [IDToDelete, setIDToDelete] = React.useState<string | null>(null);
+  const [roleToEdit, setRoleToEdit] = React.useState<Roles | null>(null);
   const [loading, setLoading] = React.useState(true);
   React.useEffect(() => {
     setTimeout(() => {
@@ -283,17 +278,17 @@ export default function Roles() {
     }, 2000);
   }, []);
 
-  const handleClickOpenDelete = () => {
-    setOpenDelete(true);
+  const handleClickOpenDelete = React.useCallback((id: string) => {
+    setIDToDelete(id);
+  }, []);
+  const handleCloseDelete = React.useCallback(() => {
+    setIDToDelete(null);
+  }, []);
+  const openEdit = (role: Roles) => {
+    setRoleToEdit(role);
   };
-  const handleCloseDelete = () => {
-    setOpenDelete(false);
-  };
-  const handleClickOpenEdit = () => {
-    setOpenEdit(true);
-  };
-  const handleCloseEdit = () => {
-    setOpenEdit(false);
+  const closeEdit = () => {
+    setRoleToEdit(null);
   };
 
   const handleRequestSort = (
@@ -342,13 +337,14 @@ export default function Roles() {
                 .map((role, index) => {
                   const isItemSelected = isSelected(role.role);
                   const labelId = `enhanced-table-checkbox-${index}`;
+				  console.log('table map', role);
 
                   return (
                     <TableRow
                       hover
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={role.role}
+                      key={role.id}
                       selected={isItemSelected}
                     >
                       <TableCell
@@ -376,7 +372,7 @@ export default function Roles() {
                           />
                         ) : (
                           <>
-                            <IconButton onClick={handleClickOpenEdit}>
+                            <IconButton onClick={() => openEdit(role)}>
                               <EditIcon
                                 sx={{
                                   width: "20px",
@@ -385,7 +381,9 @@ export default function Roles() {
                                 }}
                               />
                             </IconButton>
-                            <IconButton onClick={handleClickOpenDelete}>
+                            <IconButton
+                              onClick={() => handleClickOpenDelete(role.id)}
+                            >
                               <DeleteIcon
                                 sx={{
                                   width: "20px",
@@ -396,16 +394,6 @@ export default function Roles() {
                             </IconButton>
                           </>
                         )}
-                        <EditRoleModal
-                          openEdit={openEdit}
-                          role={role}
-                          handleCloseEdit={handleCloseEdit}
-                        />
-                        <DeleteRoleModal
-                          openDelete={openDelete}
-                          role={role}
-                          handleCloseDelete={handleCloseDelete}
-                        />
                       </TableCell>
                     </TableRow>
                   );
@@ -432,6 +420,15 @@ export default function Roles() {
             </StyledTypography>
           )}
         </TableContainer>
+        <EditRoleModal
+          role={roleToEdit}
+          handleClose={closeEdit}
+        />
+        <DeleteRoleModal
+          id={IDToDelete}
+          handleClose={handleCloseDelete}
+        />
+
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"

@@ -28,7 +28,7 @@ import { roleSelector } from '../../../redux/role.slice';
 import { EditModal } from './EditModal';
 import SearchModal from './SearchModal';
 import type { Users } from '../../../models';
-interface Data extends Users {
+interface Data extends Users{
 	action: string;
 }
 
@@ -353,9 +353,9 @@ export default function Users() {
 							loading={loading}
 						/>
 						<TableBody>
-							{/* {stableSort(users, getComparator(order, orderBy))
-								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) */}
-							{users.map((user, index) => {
+							{stableSort(users, getComparator(order, orderBy))
+							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+							.map((user, index) => {
 								const isItemSelected = isSelected(user.name);
 								const labelId = `enhanced-table-checkbox-${index}`;
 								console.log('table map', user);

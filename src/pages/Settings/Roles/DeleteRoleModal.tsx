@@ -8,27 +8,21 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useDispatch } from "react-redux";
 import { deleteRole } from "../../../redux/role.slice";
 interface PropsDeleteModal {
-  openDelete: boolean;
-  handleCloseDelete: () => void;
-  role: any;
+	handleClose: () => void;
+	id: string | null;
 }
 
-export default function DeleteRoleModal({
-  openDelete,
-  handleCloseDelete,
-  role,
-}: PropsDeleteModal) {
+ function DeleteRoleModal({ handleClose, id }: PropsDeleteModal) {
   const dispatch = useDispatch();
   const deleteModal = () => {
-    dispatch(deleteRole(role));
-    handleCloseDelete();
-  };
-  console.log;
-  return (
+	dispatch(deleteRole({ id: id! }));
+	handleClose();
+};
+return (
     <div>
       <Dialog
-        open={openDelete}
-        onClose={handleCloseDelete}
+        open={Boolean(id)}
+        onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -39,7 +33,7 @@ export default function DeleteRoleModal({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button color="inherit" onClick={handleCloseDelete}>
+          <Button color="inherit" onClick={handleClose}>
             Cancel
           </Button>
           <Button
@@ -55,3 +49,7 @@ export default function DeleteRoleModal({
     </div>
   );
 }
+
+export default React.memo(DeleteRoleModal);
+
+
