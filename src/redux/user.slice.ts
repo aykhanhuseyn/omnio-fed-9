@@ -31,7 +31,6 @@ const userSlice = createSlice({
 			state.users.push(user);
 		},
 
-		//ERROR deleteUser
 		deleteUser: (state, { payload }: PayloadAction<Pick<Users, 'id'>>) => {
 			console.log('redux', payload.id);
 			const users = cloneDeep(state.users);
@@ -44,11 +43,16 @@ const userSlice = createSlice({
 				state.users[index] = payload;
 			}
 		},
+		searchUser: (state, { payload }: PayloadAction<Users>) => {
+			const users = cloneDeep(state.users);
+			return { ...state, users: users.filter((user) => user==payload) };
+		},
+
 	},
 });
 
 export const userSelector = (state: RootState) => state.users.users;
 
-export const { addUser, deleteUser, editUser } = userSlice.actions;
+export const { addUser, deleteUser, editUser,searchUser } = userSlice.actions;
 
 export default userSlice.reducer;

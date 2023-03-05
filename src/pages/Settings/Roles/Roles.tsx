@@ -20,8 +20,8 @@ import { Button, Skeleton } from "@mui/material";
 import { styled } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
-import { useSelector } from "react-redux";
-import { roleSelector } from "../../../redux/role.slice";
+import { useDispatch, useSelector } from "react-redux";
+import { editRole, roleSelector } from "../../../redux/role.slice";
 import { AddRoleModal } from "./AddRoleModal";
 import DeleteRoleModal from "./DeleteRoleModal";
 import { EditRoleModal } from "./EditRoleModal";
@@ -275,7 +275,7 @@ export default function Roles() {
   React.useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1000);
   }, []);
 
   const handleClickOpenDelete = React.useCallback((id: string) => {
@@ -284,7 +284,8 @@ export default function Roles() {
   const handleCloseDelete = React.useCallback(() => {
     setIDToDelete(null);
   }, []);
-  const openEdit = (role: Roles) => {
+
+    const openEdit = (role: Roles) => {
     setRoleToEdit(role);
   };
   const closeEdit = () => {

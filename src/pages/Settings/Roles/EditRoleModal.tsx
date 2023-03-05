@@ -44,6 +44,7 @@ export const EditRoleModal = ({ role, handleClose }: EditRoleModalProps) => {
       );
       reset();
       handleClose();
+
     };
   
     return (
@@ -60,16 +61,17 @@ export const EditRoleModal = ({ role, handleClose }: EditRoleModalProps) => {
             "& .MuiTextField-root": { m: 1, width: "255px" },
           }}
         >
+
           <TextField
             size="medium"
             id="role"
             label="Role"
             variant="outlined"
             type="text"
-            defaultValue={role?.role}
             {...register("role")}
             error={Boolean(formState?.errors?.role)}
             helperText={formState?.errors?.role?.message ?? ""}
+            defaultValue={role?.role}
           />
         </DialogContent>
         <DialogActions sx={{ paddingRight: "30px", paddingLeft: "30px" }}>

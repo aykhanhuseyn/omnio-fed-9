@@ -44,5 +44,5 @@ export interface Users extends FormValues {
 
 export interface Roles {
 	role: string;
-	id: any;
+	id: string;
 }

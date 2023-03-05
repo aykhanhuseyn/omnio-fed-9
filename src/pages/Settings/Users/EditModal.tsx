@@ -173,8 +173,8 @@ export const EditModal = ({ user, handleClose }: PropsEdit) => {
 						<Autocomplete
 							disablePortal
 							id='addedRoles'
-							options={roles}
 							defaultValue={user?.role}
+							options={roles}
 							renderInput={(params) => (
 								<TextField
 									{...params}

@@ -15,6 +15,8 @@ import Badge from "@mui/material/Badge/Badge";
 import { useForm } from "react-hook-form";
 import { FormValues } from "../../../models";
 import { SubmitHandler } from "react-hook-form/dist/types";
+import { useDispatch } from "react-redux";
+import { searchUser } from "../../../redux/user.slice";
 
 interface PropsSearchModal {
   openSearch: boolean;
@@ -35,13 +37,22 @@ export default function SearchModal({
   openSearch,
   handleCloseSearch,
 }: PropsSearchModal) {
-  const { register, handleSubmit, formState, watch, getValues } =
+  const dispatch=useDispatch()
+  const { register, handleSubmit, reset } =
     useForm<FormValues>({
       mode: "onChange",
       shouldFocusError: true,
       reValidateMode: "onChange",
     });
-  const onSubmit: SubmitHandler<FormValues> = (data) => console.log(data);
+    const onSubmit = (user: any) => {
+      dispatch(
+        searchUser(user)
+      );
+      handleCloseSearch();
+      reset();
+    };
+  
+  // const onSubmit: SubmitHandler<FormValues> = (data) => console.log(data);
   return (
     <Dialog
       fullScreen
@@ -50,6 +61,7 @@ export default function SearchModal({
       onClose={handleCloseSearch}
       TransitionComponent={Transition}
     >
+      <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <DialogTitle sx={{ padding: 0 }} id="alert-dialog-title">
           {"Search "}
@@ -69,7 +81,6 @@ export default function SearchModal({
           </Button>
         </StyledWrapper>
       </div>
-      <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <Box
           sx={{
             display: "flex",

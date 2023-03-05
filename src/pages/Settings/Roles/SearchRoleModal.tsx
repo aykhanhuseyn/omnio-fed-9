@@ -14,7 +14,8 @@ import Badge from "@mui/material/Badge/Badge";
 import { useForm } from "react-hook-form";
 import { FormValues } from "../../../models";
 import { SubmitHandler } from "react-hook-form/dist/types";
-
+import { useDispatch } from "react-redux";
+import { searchRole } from "../../../redux/role.slice";
 interface PropsSearchModal {
   openSearch: boolean;
   handleCloseSearch: () => void;
@@ -34,15 +35,22 @@ export default function SearchRoleModal({
   openSearch,
   handleCloseSearch,
 }: PropsSearchModal) {
-  const { register, handleSubmit, formState, watch, getValues } =
-  useForm<FormValues>({
-    mode: 'onChange',
+  const dispatch = useDispatch();
+  const { register, handleSubmit, formState, reset } = useForm<FormValues>({
+    mode: "onChange",
     shouldFocusError: true,
-    reValidateMode: 'onChange',
+    reValidateMode: "onChange",
   });
-  const onSubmit: SubmitHandler<FormValues> = data => console.log(data);
-  ;
-
+  // const onSubmit: SubmitHandler<FormValues> = data => console.log(data.role);
+  const onSubmit = (role: any) => {
+    dispatch(
+      searchRole({
+        role: role?.role,
+      })
+    );
+    handleCloseSearch();
+    reset();
+  };
   return (
     <Dialog
       fullScreen
@@ -51,12 +59,14 @@ export default function SearchRoleModal({
       onClose={handleCloseSearch}
       TransitionComponent={Transition}
     >
+     <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <DialogTitle sx={{ padding: 0 }} id="alert-dialog-title">
           {"Search "}
         </DialogTitle>
         <StyledWrapper sx={{ alignItems: "center", marginRight: "20px" }}>
           <Button
+            type="reset"
             variant="text"
             endIcon={
               <Badge
@@ -70,12 +80,11 @@ export default function SearchRoleModal({
           </Button>
         </StyledWrapper>
       </div>
-      <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <Box
           sx={{
             display: "flex",
             gap: "26px 3%",
-            flexWrap:'wrap',
+            flexWrap: "wrap",
             "& .MuiTextField-root": { m: 1, width: "255px" },
           }}
         >
@@ -85,22 +94,17 @@ export default function SearchRoleModal({
             label="Role"
             variant="outlined"
             type="text"
-            {...register('role')}
+            {...register("role")}
           />
         </Box>
         <DialogActions>
-        <Button color="inherit" onClick={handleCloseSearch}>
-          Cancel
-        </Button>
-        <Button
-          color="primary"
-          variant="contained"
-          type="submit"
-          autoFocus
-        >
-          Search
-        </Button>
-      </DialogActions>
+          <Button color="inherit" onClick={handleCloseSearch}>
+            Cancel
+          </Button>
+          <Button color="primary" variant="contained" type="submit" autoFocus>
+            Search
+          </Button>
+        </DialogActions>
       </form>
     </Dialog>
   );
