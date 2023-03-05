@@ -4,23 +4,27 @@ import Dialog from "@mui/material/Dialog";
 import Slide from "@mui/material/Slide";
 import "../../../styles/style.css";
 import { TransitionProps } from "@mui/material/transitions";
-import { DialogTitle } from "@mui/material";
+import { DialogTitle,  MenuItem} from "@mui/material";
 import { StyledWrapper } from "./Users";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { roles, tenants } from "./AddModal";
+// import { roles, tenants } from "./AddModal";
 import DialogActions from "@mui/material/DialogActions";
 import Badge from "@mui/material/Badge/Badge";
 import { useForm } from "react-hook-form";
 import { FormValues } from "../../../models";
 import { SubmitHandler } from "react-hook-form/dist/types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { searchUser } from "../../../redux/user.slice";
-
+import { MenuProps } from "./AddModal";
+import { roleSelector } from "../../../redux/role.slice";
 interface PropsSearchModal {
   openSearch: boolean;
   handleCloseSearch: () => void;
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  selectValue: string;
+
 }
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -36,7 +40,10 @@ const Transition = React.forwardRef(function Transition(
 export default function SearchModal({
   openSearch,
   handleCloseSearch,
+  handleChange,
+  selectValue
 }: PropsSearchModal) {
+  const roles = useSelector(roleSelector);
   const dispatch=useDispatch()
   const { register, handleSubmit, reset } =
     useForm<FormValues>({
@@ -66,20 +73,21 @@ export default function SearchModal({
         <DialogTitle sx={{ padding: 0 }} id="alert-dialog-title">
           {"Search "}
         </DialogTitle>
-        <StyledWrapper sx={{ alignItems: "center", marginRight: "20px" }}>
+        {/* <StyledWrapper sx={{ alignItems: "center", marginRight: "20px" }}> */}
           <Button
+          type="reset"
             variant="text"
-            endIcon={
-              <Badge
-                sx={{ marginLeft: "8px" }}
-                color="primary"
-                badgeContent={1}
-              />
-            }
+            // endIcon={
+            //   <Badge
+            //     sx={{ marginLeft: "8px" }}
+            //     color="primary"
+            //     badgeContent={1}
+            //   />
+            // }
           >
-            Clear
+            Clear All
           </Button>
-        </StyledWrapper>
+        {/* </StyledWrapper> */}
       </div>
         <Box
           sx={{
@@ -120,7 +128,42 @@ export default function SearchModal({
             type="text"
             {...register("username")}
           />
-          <Autocomplete
+                      <TextField
+              select
+              id="role"
+              SelectProps={{
+                MenuProps:MenuProps
+              }}    
+              value={selectValue}
+              label="Role"
+              onChange={handleChange}
+
+            >
+              {roles.map((role) => (
+                <MenuItem key={role.id} value={role?.role}>
+                  {role?.role}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              select
+              id="tenant"
+              SelectProps={{
+                MenuProps:MenuProps
+              }}    
+              value={selectValue}
+              label="Tenant"
+              onChange={handleChange}
+
+            >
+              {roles.map((role) => (
+                <MenuItem key={role.id} value={role?.role}>
+                  {role?.role}
+                </MenuItem>
+              ))}
+            </TextField>
+
+          {/* <Autocomplete
             disablePortal
             id="addedRoles"
             options={roles}
@@ -147,7 +190,7 @@ export default function SearchModal({
                 {...register("tenant")}
               />
             )}
-          />
+          /> */}
         </Box>
         <DialogActions>
           <Button color="inherit" onClick={handleCloseSearch}>

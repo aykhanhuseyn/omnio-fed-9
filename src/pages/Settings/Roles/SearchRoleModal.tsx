@@ -64,21 +64,21 @@ export default function SearchRoleModal({
         <DialogTitle sx={{ padding: 0 }} id="alert-dialog-title">
           {"Search "}
         </DialogTitle>
-        <StyledWrapper sx={{ alignItems: "center", marginRight: "20px" }}>
+        {/* <StyledWrapper sx={{ alignItems: "center", marginRight: "20px" }}> */}
           <Button
             type="reset"
             variant="text"
-            endIcon={
-              <Badge
-                sx={{ marginLeft: "8px" }}
-                color="primary"
-                badgeContent={1}
-              />
-            }
+            // endIcon={
+            //   <Badge
+            //     sx={{ marginLeft: "8px" }}
+            //     color="primary"
+            //     badgeContent={1}
+            //   />
+            // }
           >
-            Clear
+            Clear All
           </Button>
-        </StyledWrapper>
+        {/* </StyledWrapper> */}
       </div>
         <Box
           sx={{

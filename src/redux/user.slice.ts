@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { cloneDeep, filter, find, findIndex, uniqueId } from 'lodash';
-import { LoginUser, Users } from '../models';
+import type { LoginUser, Users } from '../models';
 import type { RootState } from './store';
 interface State {
 	users: Users[];
@@ -47,12 +47,14 @@ const userSlice = createSlice({
 			const users = cloneDeep(state.users);
 			return { ...state, users: users.filter((user) => user==payload) };
 		},
-
+		resetUser:()=>{
+			return {...initialState}
+		}
 	},
 });
 
 export const userSelector = (state: RootState) => state.users.users;
 
-export const { addUser, deleteUser, editUser,searchUser } = userSlice.actions;
+export const { addUser, deleteUser, editUser,searchUser,resetUser } = userSlice.actions;
 
 export default userSlice.reducer;

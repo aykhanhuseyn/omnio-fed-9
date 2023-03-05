@@ -7,26 +7,34 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  Autocomplete,
   IconButton,
+  MenuItem,
 } from "@mui/material";
 import { uniqueId } from "lodash";
 import type { FormValues } from "../../../models";
 import { useForm } from "react-hook-form";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../../../redux/user.slice";
 import InputAdornment from "@mui/material/InputAdornment";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import { roleSelector } from "../../../redux/role.slice";
 
 interface Props {
   open: boolean;
   handleClose: () => void;
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  selectValue: string;
 }
-
-export const roles = ["Admin", "Agent", "Superviser"];
-export const tenants = ["Admin", "Agent", "Superviser"];
+export const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: 120,
+      width: 250,
+    },
+  },
+};
 
 const passwordSpecialChars = ["!", "@", "#", "$", "%", "&"];
 
@@ -40,12 +48,12 @@ const schema = object().shape({
     .max(20, "Username is too long")
     .required("Username is required"),
   role: string()
-    .ensure()
-    .oneOf(roles, `Rolu must be one of ${roles.join(", ")}`)
+    // .ensure()
+    // .oneOf(roles, `Rolu must be one of ${roles.join(", ")}`)
     .required("Role is required"),
   tenant: string()
-    .ensure()
-    .oneOf(roles, `Rolu must be one of ${roles.join(", ")}`)
+    // .ensure()
+    // .oneOf(roles, `Rolu must be one of ${roles.join(", ")}`)
     .required("Tenant is required"),
   password: string()
     .min(8, "Password is too short")
@@ -63,18 +71,23 @@ const schema = object().shape({
     .required("Confirm password is required"),
 });
 
-export const AddModal = ({ open, handleClose }: Props) => {
+export const AddModal = ({
+  open,
+  handleClose,
+  handleChange,
+  selectValue,
+}: Props) => {
+  const roles = useSelector(roleSelector);
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
   const dispatch = useDispatch();
-  const { register, handleSubmit, formState, reset } =
-    useForm<FormValues>({
-      mode: "onChange",
-      shouldFocusError: true,
-      reValidateMode: "onChange",
-      resolver: yupResolver(schema),
-    });
+  const { register, handleSubmit, formState, reset } = useForm<FormValues>({
+    mode: "onChange",
+    shouldFocusError: true,
+    reValidateMode: "onChange",
+    resolver: yupResolver(schema),
+  });
 
   const onSubmit = (user: any) => {
     dispatch(
@@ -91,7 +104,7 @@ export const AddModal = ({ open, handleClose }: Props) => {
       })
     );
     handleClose();
-    reset()
+    reset();
   };
 
   return (
@@ -167,38 +180,47 @@ export const AddModal = ({ open, handleClose }: Props) => {
               justifyContent: "space-between",
             }}
           >
-            <Autocomplete
-              disablePortal
-              id="addedRoles"
-              options={roles}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Role"
-                  variant="outlined"
-                  id="role"
-                  {...register("role")}
-                  error={Boolean(formState?.errors?.role)}
-                  helperText={formState?.errors?.role?.message ?? ""}
-                />
-              )}
-            />
-            <Autocomplete
-              disablePortal
-              id="addedTenants"
-              options={roles}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Tenant"
-                  id="tenant"
-                  variant="outlined"
-                  {...register("tenant")}
-                  error={Boolean(formState?.errors?.tenant)}
-                  helperText={formState?.errors?.tenant?.message ?? ""}
-                />
-              )}
-            />
+            <TextField
+              select
+              id="role"
+              SelectProps={{
+                MenuProps:MenuProps
+              }}    
+              value={selectValue}
+              label="Role"
+              {...register("role")}
+              error={Boolean(formState?.errors?.role)}
+              helperText={formState?.errors?.role?.message ?? ""}
+              onChange={handleChange}
+
+            >
+              {roles.map((role) => (
+                <MenuItem key={role.id} value={role?.role}>
+                  {role?.role}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              select
+              id="tenant"
+              SelectProps={{
+                MenuProps:MenuProps
+              }}    
+              value={selectValue}
+              label="Tenant"
+              {...register("tenant")}
+              error={Boolean(formState?.errors?.tenant)}
+              helperText={formState?.errors?.tenant?.message ?? ""}
+              onChange={handleChange}
+
+            >
+              {roles.map((role) => (
+                <MenuItem key={role.id} value={role?.role}>
+                  {role?.role}
+                </MenuItem>
+              ))}
+            </TextField>
+
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <TextField

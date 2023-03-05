@@ -41,12 +41,16 @@ const roleSlice = createSlice({
 			const roles = cloneDeep(state.roles);
 			return { ...state, roles: roles.filter((role) => role.role == payload.role) };
 		},
+		resetRole:()=>{
+			return {...initialState}
+		}
+
 
 	},
 });
 
 export const roleSelector = (state: RootState) => state.roles.roles;
 
-export const { addRole, deleteRole, editRole,searchRole } = roleSlice.actions;
+export const { addRole, deleteRole, editRole,searchRole,resetRole } = roleSlice.actions;
 
 export default roleSlice.reducer;
