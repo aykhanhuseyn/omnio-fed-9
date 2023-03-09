@@ -290,8 +290,8 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           </Button>
         )}
         <SearchModal
-          selectValue={selectValue}
-          handleChange={handleChange}
+          // selectValue={selectValue}
+          // handleChange={handleChange}
           openSearch={openSearch}
           handleCloseSearch={handleCloseSearch}
         />

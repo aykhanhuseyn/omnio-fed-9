@@ -45,7 +45,16 @@ const userSlice = createSlice({
 		},
 		searchUser: (state, { payload }: PayloadAction<Users>) => {
 			const users = cloneDeep(state.users);
-			return { ...state, users: users.filter((user) => user==payload) };
+			return { ...state, users: users
+				.filter(user => user.name==(payload.name=='' ? user.name:payload.name)) 
+				.filter(user => user.username==(payload.username=='' ? user.username:payload.username)) 
+				.filter(user => user.email==(payload.email=='' ? user.email:payload.email)) 
+				.filter(user => user.surname==(payload.surname=='' ? user.surname:payload.surname)) 
+				.filter(user => user.role==(payload.role=='' ? user.role:payload.role)) 
+				.filter(user => user.tenant==(payload.tenant=='' ? user.tenant:payload.tenant)) 
+
+			};
+			// return { ...state, users: users.filter((user) => user==payload) };
 		},
 		resetUser:()=>{
 			return {...initialState}

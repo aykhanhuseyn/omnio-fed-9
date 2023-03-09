@@ -22,8 +22,8 @@ import { roleSelector } from "../../../redux/role.slice";
 interface PropsSearchModal {
   openSearch: boolean;
   handleCloseSearch: () => void;
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  selectValue: string;
+  // handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  // selectValue: string;
 
 }
 const Transition = React.forwardRef(function Transition(
@@ -40,9 +40,15 @@ const Transition = React.forwardRef(function Transition(
 export default function SearchModal({
   openSearch,
   handleCloseSearch,
-  handleChange,
-  selectValue
+  // handleChange,
+  // selectValue
 }: PropsSearchModal) {
+  const [selectSearchValue, setSelectSearchValue] = React.useState("");
+  const handleSelectChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    setSelectSearchValue(event.target.value as string);
+  };
+
   const roles = useSelector(roleSelector);
   const dispatch=useDispatch()
   const { register, handleSubmit, reset } =
@@ -134,9 +140,10 @@ export default function SearchModal({
               SelectProps={{
                 MenuProps:MenuProps
               }}    
-              value={selectValue}
+              value={selectSearchValue}
               label="Role"
-              onChange={handleChange}
+              {...register("role")}
+              onChange={handleSelectChange}
 
             >
               {roles.map((role) => (
@@ -151,9 +158,10 @@ export default function SearchModal({
               SelectProps={{
                 MenuProps:MenuProps
               }}    
-              value={selectValue}
+              value={selectSearchValue}
               label="Tenant"
-              onChange={handleChange}
+              {...register("tenant")}
+              onChange={handleSelectChange}
 
             >
               {roles.map((role) => (
