@@ -6,27 +6,30 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogTitle,
-	Box,
 	TextField,
-	Autocomplete,
 	InputAdornment,
 	IconButton,
+	MenuItem,
+	Select,
+	FormHelperText,
+	InputLabel,
 } from '@mui/material';
 import type { FormValues, Users } from '../../../models';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { editUser } from '../../../redux/user.slice';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { roleSelector } from '../../../redux/role.slice';
+import { MenuProps } from './AddModal';
 
 interface PropsEdit {
 	handleClose: () => void;
 	user: Users | null;
+	handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	selectValue: string;
 }
-
-const roles = ['Admin', 'Agent', 'Superviser'];
-const tenants = ['Admin', 'Agent', 'Superviser'];
 
 const passwordSpecialChars = ['!', '@', '#', '$', '%', '&'];
 
@@ -40,10 +43,10 @@ const schema = object().shape({
 		.max(20, 'Username is too long')
 		.required('Username is required'),
 	role: string()
-		.oneOf(roles, `Rolu must be one of ${roles.join(', ')}`)
+		// .oneOf(roles, `Rolu must be one of ${roles.join(', ')}`)
 		.required('Role is required'),
 	tenant: string()
-		.oneOf(roles, `Rolu must be one of ${roles.join(', ')}`)
+		// .oneOf(roles, `Rolu must be one of ${roles.join(', ')}`)
 		.required('Tenant is required'),
 	password: string()
 		.min(8, 'Password is too short')
@@ -62,8 +65,12 @@ const schema = object().shape({
 });
 
 export const EditModal = ({ user, handleClose }: PropsEdit) => {
+	const roles = useSelector(roleSelector);
+
 	const [showPassword, setShowPassword] = React.useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+	const [role, setRole] = React.useState('');
+	const [tenant, setTenant] = React.useState('');
 	const dispatch = useDispatch();
 
 	const { register, handleSubmit, formState, reset } = useForm<FormValues>({
@@ -75,23 +82,24 @@ export const EditModal = ({ user, handleClose }: PropsEdit) => {
 
 	const onSubmit = (fromSubmitData: any) => {
 		console.log('onSubmit', fromSubmitData);
-		dispatch(
-			editUser({
-				id: user?.id!,
-				name: fromSubmitData.name,
-				surname: fromSubmitData.surname,
-				email: fromSubmitData.email,
-				username: fromSubmitData.username,
-				role: fromSubmitData.role,
-				tenant: fromSubmitData.tenant,
-				password: fromSubmitData.password,
-				confirmPassword: fromSubmitData.confirmPassword,
-			}),
-		);
+		dispatch(editUser(fromSubmitData));
+		setRole('');
+		setTenant('');
 		handleClose();
 		reset();
-
 	};
+
+	useEffect(() => {
+		if (user) {
+			reset(user);
+			setRole(user.role);
+			setTenant(user.tenant);
+		} else {
+			reset();
+			setRole('');
+			setTenant('');
+		}
+	}, [user, reset]);
 
 	return (
 		<Dialog
@@ -122,7 +130,6 @@ export const EditModal = ({ user, handleClose }: PropsEdit) => {
 							{...register('name')}
 							error={Boolean(formState?.errors?.name)}
 							helperText={formState?.errors?.name?.message ?? ''}
-							defaultValue={user?.name}
 						/>
 						<TextField
 							size='medium'
@@ -133,7 +140,6 @@ export const EditModal = ({ user, handleClose }: PropsEdit) => {
 							{...register('surname')}
 							error={Boolean(formState?.errors?.surname)}
 							helperText={formState?.errors?.surname?.message ?? ''}
-							defaultValue={user?.surname}
 						/>
 					</div>
 					<div
@@ -150,7 +156,6 @@ export const EditModal = ({ user, handleClose }: PropsEdit) => {
 							{...register('email')}
 							error={Boolean(formState?.errors?.email)}
 							helperText={formState?.errors?.email?.message ?? ''}
-							defaultValue={user?.email}
 						/>
 						<TextField
 							size='medium'
@@ -161,7 +166,6 @@ export const EditModal = ({ user, handleClose }: PropsEdit) => {
 							{...register('username')}
 							error={Boolean(formState?.errors?.username)}
 							helperText={formState?.errors?.username?.message ?? ''}
-							defaultValue={user?.username}
 						/>
 					</div>
 					<div
@@ -170,40 +174,125 @@ export const EditModal = ({ user, handleClose }: PropsEdit) => {
 							justifyContent: 'space-between',
 						}}
 					>
-						<Autocomplete
-							disablePortal
-							id='addedRoles'
-							options={roles}
-							defaultValue={user?.role}
-							renderInput={(params) => (
-								<TextField
-									{...params}
-									label='Role'
-									variant='outlined'
-									id='role'
-									{...register('role')}
-									error={Boolean(formState?.errors?.role)}
-									helperText={formState?.errors?.role?.message ?? ''}
-								/>
-							)}
-						/>
-						<Autocomplete
-							disablePortal
-							id='addedTenants'
-							options={tenants}
-							defaultValue={user?.tenant}
-							renderInput={(params) => (
-								<TextField
-									{...params}
-									label='Tenant'
-									id='tenant'
-									variant='outlined'
-									{...register('tenant')}
-									error={Boolean(formState?.errors?.tenant)}
-									helperText={formState?.errors?.tenant?.message ?? ''}
-								/>
-							)}
-						/>
+						{/* <div>
+							<InputLabel id='role-label'>Role</InputLabel>
+							<Select
+								labelId='role-label'
+								{...register('role')}
+								error={Boolean(formState?.errors?.role)}
+								defaultValue={user?.role}
+							>
+								<MenuItem disabled value=''>
+									<em>Placeholder</em>
+								</MenuItem>
+								{roles.map((role) => (
+									<MenuItem key={role.id} value={role?.role}>
+										{role?.role}
+									</MenuItem>
+								))}
+							</Select>
+							<FormHelperText error={Boolean(formState?.errors?.role)}>
+								{formState?.errors?.role?.message}
+							</FormHelperText>
+						</div>
+
+						<div>
+							<InputLabel id='tenant-label'>Tenant</InputLabel>
+							<Select
+								labelId='tenant-label'
+								{...register('tenant')}
+								error={Boolean(formState?.errors?.role)}
+								defaultValue={user?.tenant}
+							>
+								<MenuItem disabled value=''>
+									<em>Placeholder</em>
+								</MenuItem>
+								{roles.map((role) => (
+									<MenuItem key={role.id} value={role?.role}>
+										{role?.role}
+									</MenuItem>
+								))}
+							</Select>
+							<FormHelperText error={Boolean(formState?.errors?.role)}>
+								{formState?.errors?.role?.message}
+							</FormHelperText>
+						</div> */}
+
+						<TextField
+							select
+							id='role'
+							SelectProps={{
+								MenuProps: MenuProps,
+							}}
+							label='Role'
+							{...register('role')}
+							value={role}
+							onChange={(e) => {
+								setRole(e.target.value);
+							}}
+							error={Boolean(formState?.errors?.role)}
+							helperText={formState?.errors?.role?.message ?? ''}
+						>
+							{roles.map((role) => (
+								<MenuItem key={role.id} value={role?.role}>
+									{role?.role}
+								</MenuItem>
+							))}
+						</TextField>
+						<TextField
+							select
+							id='tenant'
+							SelectProps={{
+								MenuProps: MenuProps,
+							}}
+							label='Tenant'
+							{...register('tenant')}
+							value={tenant}
+							onChange={(e) => {
+								setTenant(e.target.value);
+							}}
+							error={Boolean(formState?.errors?.tenant)}
+							helperText={formState?.errors?.tenant?.message ?? ''}
+						>
+							{roles.map((role) => (
+								<MenuItem key={role.id} value={role?.role}>
+									{role?.role}
+								</MenuItem>
+							))}
+						</TextField>
+
+						{/* <TextField
+              select
+              {...register("role")}
+              error={Boolean(formState?.errors?.role)}
+              helperText={formState?.errors?.role?.message ?? ""}
+              id="demo-simple-select"
+              value={selectValue}
+              label="Role"
+              onChange={handleChange}
+            >
+              {roles.map((role) => (
+                <MenuItem key={role.id} value={role.role}>
+                  {role.role}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              select
+              {...register("tenant")}
+              error={Boolean(formState?.errors?.tenant)}
+              helperText={formState?.errors?.tenant?.message ?? ""}
+              id="demo-simple-select"
+              value={selectValue}
+              label="Tenant"
+              onChange={handleChange}
+            >
+              {roles.map((role) => (
+                <MenuItem key={role.id} value={role.role}>
+                  {role.role}
+                </MenuItem>
+              ))}
+            </TextField> */}
 					</div>
 					<div
 						style={{
@@ -217,7 +306,6 @@ export const EditModal = ({ user, handleClose }: PropsEdit) => {
 							variant='outlined'
 							type={showPassword ? 'text' : 'password'}
 							id='passwordInput'
-							defaultValue={user?.password}
 							{...register('password')}
 							error={Boolean(formState?.errors?.password)}
 							helperText={formState?.errors?.password?.message ?? ''}
@@ -246,7 +334,6 @@ export const EditModal = ({ user, handleClose }: PropsEdit) => {
 							label='Confirm password'
 							size='medium'
 							variant='outlined'
-							defaultValue={user?.confirmPassword}
 							type={showConfirmPassword ? 'text' : 'password'}
 							{...register('confirmPassword')}
 							error={Boolean(formState?.errors?.confirmPassword)}

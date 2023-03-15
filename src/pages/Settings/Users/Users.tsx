@@ -16,19 +16,20 @@ import IconButton, { IconButtonTypeMap } from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { visuallyHidden } from '@mui/utils';
-import { Button, Skeleton } from '@mui/material';
+import { Button, SelectChangeEvent, Skeleton } from '@mui/material';
 import { styled } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import { AddModal } from './AddModal';
 import DeleteModal from './DeleteModal';
-import { userSelector } from '../../../redux/user.slice';
-import { useSelector } from 'react-redux';
+import { resetUser, userSelector } from '../../../redux/user.slice';
+import { useDispatch, useSelector } from 'react-redux';
 import { roleSelector } from '../../../redux/role.slice';
 import { EditModal } from './EditModal';
 import SearchModal from './SearchModal';
 import type { Users } from '../../../models';
-interface Data extends Users{
+import Badge from '@mui/material/Badge';
+interface Data extends Users {
 	action: string;
 }
 
@@ -190,9 +191,13 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 interface EnhancedTableToolbarProps {
 	numSelected: number;
 	loading: boolean;
+	selectValue: string;
+	handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	users: Users[];
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
+	const dispatch = useDispatch();
 	const [openSearch, setOpenSearch] = React.useState(false);
 	const handleClickOpenSearch = () => {
 		setOpenSearch(true);
@@ -209,7 +214,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 		setOpen(false);
 	};
 
-	const { numSelected, loading } = props;
+	const { numSelected, loading, handleChange, selectValue, users } = props;
 
 	return (
 		<Toolbar
@@ -251,6 +256,26 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 					<Skeleton variant='rounded' width='88px' height='36px' />
 				) : (
 					<Button
+						sx={{ marginRight: '6px' }}
+						variant='text'
+						onClick={() => {
+							dispatch(resetUser());
+						}}
+						endIcon={
+							<Badge
+								sx={{ marginLeft: '8px' }}
+								color='primary'
+								badgeContent={users.length ? users.length : '0'}
+							/>
+						}
+					>
+						Clear
+					</Button>
+				)}
+				{loading ? (
+					<Skeleton variant='rounded' width='88px' height='36px' />
+				) : (
+					<Button
 						color='inherit'
 						size='medium'
 						onClick={handleClickOpenSearch}
@@ -260,6 +285,8 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 					</Button>
 				)}
 				<SearchModal
+					// selectValue={selectValue}
+					// handleChange={handleChange}
 					openSearch={openSearch}
 					handleCloseSearch={handleCloseSearch}
 				/>
@@ -275,7 +302,12 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 						Add
 					</Button>
 				)}
-				<AddModal open={open} handleClose={handleClose} />
+				<AddModal
+					selectValue={selectValue}
+					handleChange={handleChange}
+					open={open}
+					handleClose={handleClose}
+				/>
 			</StyledWrapper>
 		</Toolbar>
 	);
@@ -292,6 +324,11 @@ export default function Users() {
 	const [IDToDelete, setIDToDelete] = React.useState<string | null>(null);
 	const [userToEdit, setUserToEdit] = React.useState<Users | null>(null);
 	const [loading, setLoading] = React.useState(true);
+	const [selectValue, setSelectValue] = React.useState('');
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		event.preventDefault();
+		// setSelectValue(event.target.value as string);
+	};
 
 	React.useEffect(() => {
 		setTimeout(() => {
@@ -340,7 +377,13 @@ export default function Users() {
 
 	return (
 		<Box sx={{ width: '100%' }}>
-			<EnhancedTableToolbar numSelected={selected.length} loading={loading} />
+			<EnhancedTableToolbar
+				users={users}
+				selectValue={selectValue}
+				handleChange={handleChange}
+				numSelected={selected.length}
+				loading={loading}
+			/>
 			<Paper sx={{ width: '100%', mb: 2 }}>
 				<TableContainer>
 					<Table sx={{ minWidth: 1500 }} aria-labelledby='tableTitle'>
@@ -354,113 +397,113 @@ export default function Users() {
 						/>
 						<TableBody>
 							{stableSort(users, getComparator(order, orderBy))
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map((user, index) => {
-								const isItemSelected = isSelected(user.name);
-								const labelId = `enhanced-table-checkbox-${index}`;
-								console.log('table map', user);
+								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+								.map((user, index) => {
+									const isItemSelected = isSelected(user.name);
+									const labelId = `enhanced-table-checkbox-${index}`;
+									console.log('table map', user);
 
-								return (
-									<TableRow
-										hover
-										aria-checked={isItemSelected}
-										tabIndex={-1}
-										key={user.id}
-										selected={isItemSelected}
-									>
-										<TableCell
-											component='th'
-											id={labelId}
-											scope='row'
-											sx={{ color: '#212121' }}
+									return (
+										<TableRow
+											hover
+											aria-checked={isItemSelected}
+											tabIndex={-1}
+											key={user.id}
+											selected={isItemSelected}
 										>
-											{loading ? (
-												<Skeleton
-													sx={{ display: 'inline-block' }}
-													animation='wave'
-													width='88px'
-												/>
-											) : (
-												user.name
-											)}
-										</TableCell>
-										<TableCell align='right' sx={{ color: '#212121' }}>
-											{loading ? (
-												<Skeleton
-													sx={{ display: 'inline-block' }}
-													animation='wave'
-													width='88px'
-												/>
-											) : (
-												user.surname
-											)}
-										</TableCell>
-										<TableCell align='right' sx={{ color: '#212121' }}>
-											{loading ? (
-												<Skeleton
-													sx={{ display: 'inline-block' }}
-													animation='wave'
-													width='88px'
-												/>
-											) : (
-												user.email
-											)}
-										</TableCell>
-										<TableCell align='right' sx={{ color: '#212121' }}>
-											{loading ? (
-												<Skeleton
-													sx={{ display: 'inline-block' }}
-													animation='wave'
-													width='88px'
-												/>
-											) : (
-												user.username
-											)}
-										</TableCell>
-										<TableCell align='right' sx={{ color: '#212121' }}>
-											{loading ? (
-												<Skeleton
-													sx={{ display: 'inline-block' }}
-													animation='wave'
-													width='88px'
-												/>
-											) : (
-												user.role
-											)}
-										</TableCell>
-										<TableCell align='right'>
-											{loading ? (
-												<Skeleton
-													sx={{ display: 'inline-block' }}
-													animation='wave'
-													width='88px'
-												/>
-											) : (
-												<>
-													<IconButton onClick={() => openEdit(user)}>
-														<EditIcon
-															sx={{
-																width: '20px',
-																height: '20px',
-																color: '#616161',
-															}}
-														/>
-													</IconButton>
-													<IconButton onClick={() => handleClickOpenDelete(user.id)}>
-														<DeleteIcon
-															sx={{
-																width: '20px',
-																height: '20px',
-																color: '#616161',
-															}}
-														/>
-													</IconButton>
-												</>
-											)}
-										</TableCell>
-									</TableRow>
-								);
-							})}
+											<TableCell
+												component='th'
+												id={labelId}
+												scope='row'
+												sx={{ color: '#212121' }}
+											>
+												{loading ? (
+													<Skeleton
+														sx={{ display: 'inline-block' }}
+														animation='wave'
+														width='88px'
+													/>
+												) : (
+													user.name
+												)}
+											</TableCell>
+											<TableCell align='right' sx={{ color: '#212121' }}>
+												{loading ? (
+													<Skeleton
+														sx={{ display: 'inline-block' }}
+														animation='wave'
+														width='88px'
+													/>
+												) : (
+													user.surname
+												)}
+											</TableCell>
+											<TableCell align='right' sx={{ color: '#212121' }}>
+												{loading ? (
+													<Skeleton
+														sx={{ display: 'inline-block' }}
+														animation='wave'
+														width='88px'
+													/>
+												) : (
+													user.email
+												)}
+											</TableCell>
+											<TableCell align='right' sx={{ color: '#212121' }}>
+												{loading ? (
+													<Skeleton
+														sx={{ display: 'inline-block' }}
+														animation='wave'
+														width='88px'
+													/>
+												) : (
+													user.username
+												)}
+											</TableCell>
+											<TableCell align='right' sx={{ color: '#212121' }}>
+												{loading ? (
+													<Skeleton
+														sx={{ display: 'inline-block' }}
+														animation='wave'
+														width='88px'
+													/>
+												) : (
+													user.role
+												)}
+											</TableCell>
+											<TableCell align='right'>
+												{loading ? (
+													<Skeleton
+														sx={{ display: 'inline-block' }}
+														animation='wave'
+														width='88px'
+													/>
+												) : (
+													<>
+														<IconButton onClick={() => openEdit(user)}>
+															<EditIcon
+																sx={{
+																	width: '20px',
+																	height: '20px',
+																	color: '#616161',
+																}}
+															/>
+														</IconButton>
+														<IconButton onClick={() => handleClickOpenDelete(user.id)}>
+															<DeleteIcon
+																sx={{
+																	width: '20px',
+																	height: '20px',
+																	color: '#616161',
+																}}
+															/>
+														</IconButton>
+													</>
+												)}
+											</TableCell>
+										</TableRow>
+									);
+								})}
 							{emptyRows > 0 && (
 								<TableRow>
 									<TableCell colSpan={6} />
@@ -483,7 +526,12 @@ export default function Users() {
 						</StyledTypography>
 					)}
 				</TableContainer>
-				<EditModal user={userToEdit} handleClose={closeEdit} />
+				<EditModal
+					handleChange={handleChange}
+					selectValue={selectValue}
+					user={userToEdit}
+					handleClose={closeEdit}
+				/>
 				<DeleteModal id={IDToDelete} handleClose={handleCloseDelete} />
 				<TablePagination
 					rowsPerPageOptions={[5, 10, 25]}

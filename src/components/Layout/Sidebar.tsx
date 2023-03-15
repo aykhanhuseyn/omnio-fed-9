@@ -68,7 +68,7 @@ export const StyledAside = styled("aside")<AsideProps>`
   align-items: ${(props) => props.alignItems || "center"};
   padding: ${(props) => props.padding || "0"};
   position: ${(props) => props.position || "fixed"};
-  left: 0;
+  /* left: 0; */
   top: 0;
   border-left: ${(props) => props.borderLeft || "none"};
 `;

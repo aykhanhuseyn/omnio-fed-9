@@ -16,12 +16,12 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { visuallyHidden } from "@mui/utils";
-import { Button, Skeleton } from "@mui/material";
+import { Badge, Button, Skeleton } from "@mui/material";
 import { styled } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
-import { useSelector } from "react-redux";
-import { roleSelector } from "../../../redux/role.slice";
+import { useDispatch, useSelector } from "react-redux";
+import { editRole, resetRole, roleSelector } from "../../../redux/role.slice";
 import { AddRoleModal } from "./AddRoleModal";
 import DeleteRoleModal from "./DeleteRoleModal";
 import { EditRoleModal } from "./EditRoleModal";
@@ -167,9 +167,11 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 interface EnhancedTableToolbarProps {
   numSelected: number;
   loading: boolean;
+  roles:Roles[]
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
+  const dispatch=useDispatch()
   const [openSearch, setOpenSearch] = React.useState(false);
   const handleClickOpenSearch = () => {
     setOpenSearch(true);
@@ -186,7 +188,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     setOpen(false);
   };
 
-  const { numSelected, loading } = props;
+  const { numSelected, loading,roles } = props;
 
   return (
     <Toolbar
@@ -227,6 +229,26 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         </Typography>
       )}
       <StyledWrapper>
+      {loading ? (
+          <Skeleton variant="rounded" width="88px" height="36px" />
+        ) : (
+          <Button
+            sx={{ marginRight: "6px" }}
+            variant="text"
+            onClick={() => {
+              dispatch(resetRole());
+            }}
+            endIcon={
+              <Badge
+                sx={{ marginLeft: "8px" }}
+                color="primary"
+                badgeContent={roles.length ? roles.length : "0"}
+              />
+            }
+          >
+            Clear
+          </Button>
+        )}
         {loading ? (
           <Skeleton variant="rounded" width="88px" height="36px" />
         ) : (
@@ -275,7 +297,7 @@ export default function Roles() {
   React.useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1000);
   }, []);
 
   const handleClickOpenDelete = React.useCallback((id: string) => {
@@ -284,7 +306,8 @@ export default function Roles() {
   const handleCloseDelete = React.useCallback(() => {
     setIDToDelete(null);
   }, []);
-  const openEdit = (role: Roles) => {
+
+    const openEdit = (role: Roles) => {
     setRoleToEdit(role);
   };
   const closeEdit = () => {
@@ -319,7 +342,7 @@ export default function Roles() {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <EnhancedTableToolbar numSelected={selected.length} loading={loading} />
+      <EnhancedTableToolbar roles={roles} numSelected={selected.length} loading={loading} />
       <Paper sx={{ width: "100%", mb: 2 }}>
         <TableContainer>
           <Table sx={{ minWidth: 1500 }} aria-labelledby="tableTitle">

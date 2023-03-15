@@ -14,7 +14,7 @@ min-height: 100vh;
 const Settings = () => {
   return (
     <>
-    <StyledAside position='static' width='212px'   borderLeft='1px solid #3D3575' padding='20px 15px' alignItems='flex-start'>
+    <StyledAside position='fixed' width='212px'   borderLeft='1px solid #3D3575' padding='20px 15px' alignItems='flex-start'>
       <Typography component='h1' variant="h5" sx={{color:'#fff', fontWeight:500,}}>
         Settings
       </Typography>
