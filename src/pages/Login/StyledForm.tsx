@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 import styled from 'styled-components';
 
 interface FormProps {
-	height: `${number}px`;
+	height: CSSProperties['height'];
 	width: `${number}px`;
 	left: `${number}%`;
 	right: `${number}%`;

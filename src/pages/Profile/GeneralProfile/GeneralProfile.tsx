@@ -46,7 +46,7 @@ function GeneralProfileSettings() {
 				>
 					General account settings
 				</Typography>
-
+               {!isEdit && (
 				<Flex
 					style={{
 						backgroundColor: '#F5F5F5',
@@ -54,10 +54,17 @@ function GeneralProfileSettings() {
 						borderRadius: '50%',
 						cursor: 'pointer',
 					}}
-				></Flex>
+				>
+					<EditIcon onClick={handleChangeEdit}></EditIcon>
+			   
+				</Flex>
+			   )}
 			</Flex>
+			{!isEdit ? (
 			<GeneralUserInfo />
+			) : ( 
 			<GeneralUserEdit />
+			)}
 		</StyledDiv>
 	);
 }

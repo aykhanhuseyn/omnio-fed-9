@@ -3,6 +3,10 @@ import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import {styled} from '@mui/system';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { userSelector } from '../../redux/user.slice';
+
 
 
  const StyledForm = styled ('form')`
@@ -34,11 +38,34 @@ const StyledInput =styled('input')`
   cursor: pointer;
   opacity: 0;
 `;
-function GeneralUserEdit  () {
-  return (
-    <StyledForm>
-      <StyledImageDiv>
 
+    function GeneralUserEdit({handleChangeEdit, onSubmit}){
+     const userInfo =useSelector((state)=> state.auth?.userInfo) ;
+     const[photoURL,setPhotoURL]=useState('');
+     const handleFormSubmit =(e) =>{
+      e.preventDefault();
+      const { displayName } = e.target.elements;
+      onSubmit &&
+      onSubmit({
+        displayName: displayName.value,
+        photoURL: photoURL || userInfo.photoUrl,
+      });
+     };
+     const onFileChange = async (e) =>{
+      const[profileImage] = e.target.files;
+      
+
+      setPhotoURL(url);
+     };
+
+
+    
+  return (
+    <StyledForm onSubmit={handleFormSubmit}>
+      <StyledImageDiv>
+     <img src={userInfo.photoURL} alt={userInfo.displayName}
+     style={{width:'100%', borderRadius:'50%'}} />
+     <StyledInput accept='image/*' type='file' onChange={onFileChange}></StyledInput>
       </StyledImageDiv>
       <FormControl style={{display:'flex', gap:'34px', flexDirection:'column'}}>
         <TextField
@@ -75,6 +102,7 @@ function GeneralUserEdit  () {
               Save
            </Button>
             <Button
+            onClick={handleChangeEdit}
             variant='text'
             style={{color:'#000'}}>
               Cancel
