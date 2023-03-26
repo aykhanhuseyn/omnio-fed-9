@@ -392,8 +392,6 @@ export default function Roles() {
                 .map((role, index) => {
                   const isItemSelected = isSelected(role.role);
                   const labelId = `enhanced-table-checkbox-${index}`;
-                  console.log("table map", role);
-
                   return (
                     <TableRow
                       hover

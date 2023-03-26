@@ -25,13 +25,11 @@ const tenantSlice = createSlice({
 		},
 
 		deleteTenant: (state, { payload }: PayloadAction<Pick<Tenants, 'id'>>) => {
-			console.log('redux', payload.id);
 			const tenants = cloneDeep(state.tenants);
 			return { ...state, tenants: tenants.filter((tenant) => tenant.id != payload.id) };
 		},
 		editTenant: (state, { payload }: PayloadAction<Tenants>) => {
 			const index = findIndex(state.tenants, { id: payload.id });
-			console.log('index', index, payload);
 			if (index !== -1) {
 				state.tenants[index] = payload;
 			}

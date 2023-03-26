@@ -412,8 +412,6 @@ export default function Users() {
                 .map((user, index) => {
                   const isItemSelected = isSelected(user.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
-                  console.log("table map", user);
-
                   return (
                     <TableRow
                       hover

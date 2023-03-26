@@ -121,7 +121,7 @@ export default function SearchModal({
           />
           <TextField
             size="medium"
-            id="email"
+            id="emaill"
             label="Email"
             variant="outlined"
             {...register("email")}

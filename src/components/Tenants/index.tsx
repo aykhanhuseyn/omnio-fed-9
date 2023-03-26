@@ -392,8 +392,6 @@ export default function Tenants() {
                 .map((tenant, index) => {
                   const isItemSelected = isSelected(tenant.tenant);
                   const labelId = `enhanced-table-checkbox-${index}`;
-                  console.log("table map", tenant);
-
                   return (
                     <TableRow
                       hover

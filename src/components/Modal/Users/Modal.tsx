@@ -89,7 +89,6 @@ export const Modal = ({ user, type, modalOpen, handleClose }: ModalProps) => {
   });
 
   const onSubmit = (fromSubmitData: any) => {
-    console.log("onSubmit", fromSubmitData);
     if (type === "edit") {
       dispatch(editUser(fromSubmitData));
       setRole("");
@@ -181,7 +180,7 @@ export const Modal = ({ user, type, modalOpen, handleClose }: ModalProps) => {
           >
             <TextField
               size="medium"
-              id="email"
+              id="emaill"
               label="Email"
               variant="outlined"
               {...register("email")}

@@ -37,7 +37,6 @@ export const Modal = ({ role, type, modalOpen,handleClose}: ModalProps) => {
       resolver: yupResolver(schema),
     });
     const onSubmit = (fromSubmitData: any) => {
-        console.log("onSubmit", fromSubmitData);
         if (type === "edit") {
           dispatch(editRole(fromSubmitData));
           handleClose();
