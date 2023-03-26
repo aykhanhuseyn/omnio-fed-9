@@ -5,7 +5,7 @@ import Slide from "@mui/material/Slide";
 import "../../../styles/style.css";
 import { TransitionProps } from "@mui/material/transitions";
 import { DialogTitle } from "@mui/material";
-import { StyledWrapper } from "../Users/Users";
+import { StyledWrapper } from "../../../components/Users";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -16,6 +16,7 @@ import { FormValues } from "../../../models";
 import { SubmitHandler } from "react-hook-form/dist/types";
 import { useDispatch } from "react-redux";
 import { searchRole } from "../../../redux/role.slice";
+import { searchTenant } from "../../../redux/tenant.slice";
 interface PropsSearchModal {
   openSearch: boolean;
   handleCloseSearch: () => void;
@@ -31,7 +32,7 @@ const Transition = React.forwardRef(function Transition(
   );
 });
 
-export default function SearchRoleModal({
+export default function SearchModal({
   openSearch,
   handleCloseSearch,
 }: PropsSearchModal) {
@@ -42,10 +43,10 @@ export default function SearchRoleModal({
     reValidateMode: "onChange",
   });
   // const onSubmit: SubmitHandler<FormValues> = data => console.log(data.role);
-  const onSubmit = (role: any) => {
+  const onSubmit = (tenant: any) => {
     dispatch(
-      searchRole({
-        role: role?.role,
+      searchTenant({
+        tenant: tenant?.tenant,
       })
     );
     handleCloseSearch();
@@ -90,11 +91,11 @@ export default function SearchRoleModal({
         >
           <TextField
             size="medium"
-            id="role"
-            label="Role"
+            id="tenant"
+            label="Tenant"
             variant="outlined"
             type="text"
-            {...register("role")}
+            {...register("tenant")}
           />
         </Box>
         <DialogActions>

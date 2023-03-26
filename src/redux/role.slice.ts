@@ -39,7 +39,11 @@ const roleSlice = createSlice({
 		searchRole: (state, { payload }: PayloadAction<Pick<Roles, 'role'>>) => {
 			console.log('redux', payload.role);
 			const roles = cloneDeep(state.roles);
-			return { ...state, roles: roles.filter((role) => role.role == payload.role) };
+			return { ...state, roles: roles
+				.filter(role => role.role==(payload.role=='' ? role.role:payload.role)) 
+
+			 };
+			
 		},
 		resetRole:()=>{
 			return {...initialState}

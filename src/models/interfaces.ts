@@ -46,3 +46,8 @@ export interface Roles {
 	role: string;
 	id: string;
 }
+
+export interface Tenants {
+	tenant: string;
+	id: string;
+}

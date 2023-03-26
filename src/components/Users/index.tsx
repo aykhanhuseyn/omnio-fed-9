@@ -12,33 +12,33 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
+import IconButton, { IconButtonTypeMap } from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { visuallyHidden } from "@mui/utils";
-import { Badge, Button, Skeleton } from "@mui/material";
+import { Button, Skeleton } from "@mui/material";
 import { styled } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
+import DeleteModal from "../Modal/Users/DeleteModal";
+import { resetUser, userSelector } from "../../redux/user.slice";
 import { useDispatch, useSelector } from "react-redux";
-import { editRole, resetRole, roleSelector } from "../../../redux/role.slice";
-import { AddRoleModal } from "./AddRoleModal";
-import DeleteRoleModal from "./DeleteRoleModal";
-import { EditRoleModal } from "./EditRoleModal";
-import SearchRoleModal from "./SearchRoleModal";
-import type { Roles } from "../../../models";
-interface Data extends Roles {
+import SearchModal from "../../components/Modal/Users/SearchModal";
+import type { Users } from "../../models";
+import Badge from "@mui/material/Badge";
+import { Modal } from "../../components/Modal/Users/Modal";
+interface Data extends Users {
   action: string;
 }
 
-const StyledWrapper = styled("div")`
+export const StyledWrapper = styled("div")`
   display: flex;
   gap: 12px;
 `;
 const StyledTypography = styled(Typography)`
   margin: 28px;
   text-align: center;
-  color: ${({ theme }) => theme.palette.primary.main};
+  color: #574b90;
 `;
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -90,9 +90,33 @@ interface HeadCell {
 
 const headCells: readonly HeadCell[] = [
   {
-    id: "role",
+    id: "name",
     numeric: false,
     disablePadding: true,
+    label: "Name",
+  },
+  {
+    id: "surname",
+    numeric: true,
+    disablePadding: false,
+    label: "Surname",
+  },
+  {
+    id: "email",
+    numeric: true,
+    disablePadding: false,
+    label: "Email",
+  },
+  {
+    id: "username",
+    numeric: true,
+    disablePadding: false,
+    label: "Username",
+  },
+  {
+    id: "role",
+    numeric: true,
+    disablePadding: false,
     label: "Role",
   },
   {
@@ -167,28 +191,21 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 interface EnhancedTableToolbarProps {
   numSelected: number;
   loading: boolean;
-  roles:Roles[]
+  users: Users[];
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const dispatch=useDispatch()
-  const [openSearch, setOpenSearch] = React.useState(false);
-  const handleClickOpenSearch = () => {
-    setOpenSearch(true);
+  const dispatch = useDispatch();
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const closeEdit = () => {
+    setModalOpen(false);
   };
-  const handleCloseSearch = () => {
+
+  const [openSearch, setOpenSearch] = React.useState(false);
+  const closeSearch = () => {
     setOpenSearch(false);
   };
-
-  const [open, setOpen] = React.useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const { numSelected, loading,roles } = props;
+  const { numSelected, loading, users } = props;
 
   return (
     <Toolbar
@@ -224,25 +241,48 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           {loading ? (
             <Skeleton variant="text" width="180px" animation="wave" />
           ) : (
-            "Roles"
+            "Users"
           )}
         </Typography>
       )}
       <StyledWrapper>
-      {loading ? (
+        {/* {users.length !== 0 &&
+          (loading ? (
+            <Skeleton variant="rounded" width="88px" height="36px" />
+          ) : (
+            <Button
+              sx={{ marginRight: "6px" }}
+              variant="text"
+              onClick={() => {
+                dispatch(resetUser());
+              }}
+              endIcon={
+                <Badge
+                  sx={{ marginLeft: "8px" }}
+                  color="primary"
+                  badgeContent={users.length ? users.length : "0"}
+                />
+              }
+            >
+              Clear
+            </Button>
+          ))} */}
+
+        {loading ? (
           <Skeleton variant="rounded" width="88px" height="36px" />
         ) : (
           <Button
+            disabled={users.length === 0 ? true : false}
             sx={{ marginRight: "6px" }}
             variant="text"
             onClick={() => {
-              dispatch(resetRole());
+              dispatch(resetUser());
             }}
             endIcon={
               <Badge
                 sx={{ marginLeft: "8px" }}
                 color="primary"
-                badgeContent={roles.length ? roles.length : "0"}
+                badgeContent={users.length}
               />
             }
           >
@@ -253,47 +293,54 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           <Skeleton variant="rounded" width="88px" height="36px" />
         ) : (
           <Button
-            startIcon={<SearchIcon />}
             color="inherit"
             size="medium"
-            onClick={handleClickOpenSearch}
+            onClick={()=>setOpenSearch(true)}
+            startIcon={<SearchIcon />}
           >
             Search
           </Button>
         )}
+        <SearchModal
+          openSearch={openSearch}
+          closeSearch={closeSearch}
+        />
         {loading ? (
           <Skeleton variant="rounded" width="88px" height="36px" />
         ) : (
           <Button
-            startIcon={<AddIcon />}
             variant="contained"
             size="medium"
-            color="primary"
-            onClick={handleClickOpen}
+            onClick={() => setModalOpen(true)}
+            startIcon={<AddIcon />}
           >
             Add
           </Button>
         )}
-        <SearchRoleModal
-          openSearch={openSearch}
-          handleCloseSearch={handleCloseSearch}
+        <Modal
+          handleClose={closeEdit}
+          type="add"
+          modalOpen={modalOpen}
+          // setModalOpen={setModalOpen}
         />
-        <AddRoleModal open={open} handleClose={handleClose} />
       </StyledWrapper>
     </Toolbar>
   );
 }
 
-export default function Roles() {
-  const roles = useSelector(roleSelector);
+//ERROR
+export default function Users() {
+  const users = useSelector(userSelector);
   const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("role");
+  const [orderBy, setOrderBy] = React.useState<keyof Data>("name");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [IDToDelete, setIDToDelete] = React.useState<string | null>(null);
-  const [roleToEdit, setRoleToEdit] = React.useState<Roles | null>(null);
+  const [userToEdit, setUserToEdit] = React.useState<Users | null>(null);
   const [loading, setLoading] = React.useState(true);
+  const [editModalOpen, setEditModalOpen] = React.useState(false);
+
   React.useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -306,12 +353,13 @@ export default function Roles() {
   const handleCloseDelete = React.useCallback(() => {
     setIDToDelete(null);
   }, []);
-
-    const openEdit = (role: Roles) => {
-    setRoleToEdit(role);
+  const openEdit = (user: Users) => {
+    setUserToEdit(user);
+    setEditModalOpen(true);
   };
   const closeEdit = () => {
-    setRoleToEdit(null);
+    setUserToEdit(null);
+    setEditModalOpen(false);
   };
 
   const handleRequestSort = (
@@ -338,11 +386,15 @@ export default function Roles() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - roles.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
 
   return (
     <Box sx={{ width: "100%" }}>
-      <EnhancedTableToolbar roles={roles} numSelected={selected.length} loading={loading} />
+      <EnhancedTableToolbar
+        users={users}
+        numSelected={selected.length}
+        loading={loading}
+      />
       <Paper sx={{ width: "100%", mb: 2 }}>
         <TableContainer>
           <Table sx={{ minWidth: 1500 }} aria-labelledby="tableTitle">
@@ -351,23 +403,23 @@ export default function Roles() {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={roles.length}
+              rowCount={users.length}
               loading={loading}
             />
             <TableBody>
-              {stableSort(roles, getComparator(order, orderBy))
+              {stableSort(users, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((role, index) => {
-                  const isItemSelected = isSelected(role.role);
+                .map((user, index) => {
+                  const isItemSelected = isSelected(user.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
-				  console.log('table map', role);
+                  console.log("table map", user);
 
                   return (
                     <TableRow
                       hover
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={role.id}
+                      key={user.id}
                       selected={isItemSelected}
                     >
                       <TableCell
@@ -383,7 +435,51 @@ export default function Roles() {
                             width="88px"
                           />
                         ) : (
-                          role.role
+                          user.name
+                        )}
+                      </TableCell>
+                      <TableCell align="right" sx={{ color: "#212121" }}>
+                        {loading ? (
+                          <Skeleton
+                            sx={{ display: "inline-block" }}
+                            animation="wave"
+                            width="88px"
+                          />
+                        ) : (
+                          user.surname
+                        )}
+                      </TableCell>
+                      <TableCell align="right" sx={{ color: "#212121" }}>
+                        {loading ? (
+                          <Skeleton
+                            sx={{ display: "inline-block" }}
+                            animation="wave"
+                            width="88px"
+                          />
+                        ) : (
+                          user.email
+                        )}
+                      </TableCell>
+                      <TableCell align="right" sx={{ color: "#212121" }}>
+                        {loading ? (
+                          <Skeleton
+                            sx={{ display: "inline-block" }}
+                            animation="wave"
+                            width="88px"
+                          />
+                        ) : (
+                          user.username
+                        )}
+                      </TableCell>
+                      <TableCell align="right" sx={{ color: "#212121" }}>
+                        {loading ? (
+                          <Skeleton
+                            sx={{ display: "inline-block" }}
+                            animation="wave"
+                            width="88px"
+                          />
+                        ) : (
+                          user.role
                         )}
                       </TableCell>
                       <TableCell align="right">
@@ -395,7 +491,7 @@ export default function Roles() {
                           />
                         ) : (
                           <>
-                            <IconButton onClick={() => openEdit(role)}>
+                            <IconButton onClick={() => openEdit(user)}>
                               <EditIcon
                                 sx={{
                                   width: "20px",
@@ -405,7 +501,7 @@ export default function Roles() {
                               />
                             </IconButton>
                             <IconButton
-                              onClick={() => handleClickOpenDelete(role.id)}
+                              onClick={() => handleClickOpenDelete(user.id)}
                             >
                               <DeleteIcon
                                 sx={{
@@ -428,7 +524,7 @@ export default function Roles() {
               )}
             </TableBody>
           </Table>
-          {roles.length === 0 && (
+          {users.length === 0 && (
             <StyledTypography variant="subtitle1">
               {loading ? (
                 <Skeleton
@@ -443,19 +539,18 @@ export default function Roles() {
             </StyledTypography>
           )}
         </TableContainer>
-        <EditRoleModal
-          role={roleToEdit}
+        <Modal
+          type="edit"
+          user={userToEdit}
+          modalOpen={editModalOpen}
+          // setModalOpen={setEditModalOpen}
           handleClose={closeEdit}
         />
-        <DeleteRoleModal
-          id={IDToDelete}
-          handleClose={handleCloseDelete}
-        />
-
+        <DeleteModal id={IDToDelete} handleClose={handleCloseDelete} />
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={roles.length}
+          count={users.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
