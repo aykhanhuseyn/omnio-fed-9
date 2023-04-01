@@ -51,3 +51,24 @@ export interface Tenants {
 	tenant: string;
 	id: string;
 }
+
+export interface Data extends Users,Roles,Tenants{
+	action: string;
+  }
+  
+export interface HeadCell {
+	disablePadding: boolean;
+	id: keyof Data;
+	label: string;
+	numeric: boolean;
+  }
+  
+export type Order = "asc" | "desc";
+
+export interface HeadCell {
+	disablePadding: boolean;
+	id: keyof Data;
+	label: string;
+	numeric: boolean;
+  }
+  
