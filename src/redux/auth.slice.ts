@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { find } from 'lodash';
+import { find, findIndex } from 'lodash';
 import { users } from '../data/users';
 import { LoginUser, User } from '../models';
 import type { RootState } from './store';
@@ -31,6 +31,20 @@ const authSlice = createSlice({
 		logOut: (state) => {
 			state.loggedIn = false;
 		},
+		editUser: (state, payload: PayloadAction<User>) => {
+			const index=findIndex(state.user, {id:payload.payload.id})
+			if(index!==-1){
+				state.user[index]=payload.payload;
+			}
+
+		},
+
+		// editUser: (state, payload: PayloadAction<User>) => {
+		// 	state.user = {
+		// 		...state.user,
+		// 		...payload,
+		// 	}
+		// },
 	},
 });
 
