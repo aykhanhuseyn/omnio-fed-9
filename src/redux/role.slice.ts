@@ -4,12 +4,11 @@ import type { LoginUser, Roles } from '../models';
 import type { RootState } from './store';
 interface State {
 	roles: Roles[];
-	loading: boolean;
 }
 
 const initialState: State = {
 	roles: [],
-	loading: false,
+
 };
 
 const roleSlice = createSlice({
