@@ -20,6 +20,8 @@ const Flex = styled('div')<FlexProps>`
 `;
 
 function GeneralUserInfo() {
+	const userInfo = useSelector((state: any) => state.auth?.user);
+
 	return (
 		<Flex
 			justify='space-between'
@@ -27,6 +29,7 @@ function GeneralUserInfo() {
 			style={{ borderRadius: '0px 0px 8px 8px' }}
 		>
 			<Flex direction='column' align='center' justify='center'>
+				<img style={{width:'100px'}} src={userInfo?.profilePhoto} />
 				<Typography
 					variant='h6'
 					style={{ fontWeight: '400', color: '#424242', marginBottom: '2px' }}
