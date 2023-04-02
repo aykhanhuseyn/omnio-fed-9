@@ -4,12 +4,11 @@ import type { LoginUser, Roles } from '../models';
 import type { RootState } from './store';
 interface State {
 	roles: Roles[];
-	loading: boolean;
 }
 
 const initialState: State = {
 	roles: [],
-	loading: false,
+
 };
 
 const roleSlice = createSlice({
@@ -25,7 +24,6 @@ const roleSlice = createSlice({
 		},
 
 		deleteRole: (state, { payload }: PayloadAction<Pick<Roles, 'id'>>) => {
-			console.log('redux', payload.id);
 			const roles = cloneDeep(state.roles);
 			return { ...state, roles: roles.filter((role) => role.id != payload.id) };
 		},
@@ -37,9 +35,12 @@ const roleSlice = createSlice({
 			}
 		},
 		searchRole: (state, { payload }: PayloadAction<Pick<Roles, 'role'>>) => {
-			console.log('redux', payload.role);
 			const roles = cloneDeep(state.roles);
-			return { ...state, roles: roles.filter((role) => role.role == payload.role) };
+			return { ...state, roles: roles
+				.filter(role => role.role==(payload.role=='' ? role.role:payload.role)) 
+
+			 };
+			
 		},
 		resetRole:()=>{
 			return {...initialState}

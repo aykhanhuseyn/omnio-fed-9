@@ -6,16 +6,16 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useDispatch } from "react-redux";
-import { deleteRole } from "../../../redux/role.slice";
+import { deleteTenant } from "../../../redux/tenant.slice";
 interface PropsDeleteModal {
 	handleClose: () => void;
 	id: string | null;
 }
 
- function DeleteRoleModal({ handleClose, id }: PropsDeleteModal) {
+ function DeleteModal({ handleClose, id }: PropsDeleteModal) {
   const dispatch = useDispatch();
   const deleteModal = () => {
-	dispatch(deleteRole({ id: id! }));
+	dispatch(deleteTenant({ id: id! }));
 	handleClose();
 };
 return (
@@ -26,7 +26,7 @@ return (
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Delete user"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Delete tenant"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Are you sure want to delete this item?
@@ -50,6 +50,6 @@ return (
   );
 }
 
-export default React.memo(DeleteRoleModal);
+export default React.memo(DeleteModal);
 
 

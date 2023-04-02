@@ -1,8 +1,7 @@
-import {styled,Typography } from '@mui/material'
 import { Outlet } from "react-router-dom";
-import {StyledNavLink, StyledNav} from '../../components/Layout/Sidebar'
+import {styled,Typography } from '@mui/material'
+import {StyledNavLink, StyledNav,StyledAside} from '../../components/Layout/Sidebar'
 import  {settingItems} from '../../data/settingItems'
-import {StyledAside} from '../../components/Layout/Sidebar'
 const StyledContent=styled('div')`
 position: absolute;
 top: 0;

@@ -1,3 +1,8 @@
+import { useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import type { MouseEvent } from "react";
+import { useDispatch } from "react-redux";
+import { CSSProperties } from "styled-components";
 import {
   Avatar,
   Badge,
@@ -12,12 +17,7 @@ import {
   tooltipClasses,
   MenuProps,
 } from "@mui/material";
-import { useState } from "react";
-import type { MouseEvent } from "react";
-import { useDispatch } from "react-redux";
 import { logOut } from "../../redux/auth.slice";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { CSSProperties } from "styled-components";
 import { badgeTypes } from "../../data/badgeTypes";
 import { sidebarData } from "../../data/sidebarData";
 

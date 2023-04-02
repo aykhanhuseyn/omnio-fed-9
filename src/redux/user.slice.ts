@@ -1,15 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { cloneDeep, filter, find, findIndex, uniqueId } from 'lodash';
+import { cloneDeep, filter, find, findIndex, omitBy, uniqueId } from 'lodash';
 import type { LoginUser, Users } from '../models';
 import type { RootState } from './store';
+
 interface State {
 	users: Users[];
 	loading: boolean;
+	filters: Partial<Users>;
 }
 
 const initialState: State = {
 	users: [],
 	loading: false,
+	filters: {} as any,
 };
 
 const userSlice = createSlice({
@@ -32,29 +35,17 @@ const userSlice = createSlice({
 		},
 
 		deleteUser: (state, { payload }: PayloadAction<Pick<Users, 'id'>>) => {
-			console.log('redux', payload.id);
 			const users = cloneDeep(state.users);
 			return { ...state, users: users.filter((user) => user.id != payload.id) };
 		},
 		editUser: (state, { payload }: PayloadAction<Users>) => {
 			const index = findIndex(state.users, { id: payload.id });
-			console.log('index', index, payload);
 			if (index !== -1) {
 				state.users[index] = payload;
 			}
 		},
 		searchUser: (state, { payload }: PayloadAction<Users>) => {
-			const users = cloneDeep(state.users);
-			return { ...state, users: users
-				.filter(user => user.name==(payload.name=='' ? user.name:payload.name)) 
-				.filter(user => user.username==(payload.username=='' ? user.username:payload.username)) 
-				.filter(user => user.email==(payload.email=='' ? user.email:payload.email)) 
-				.filter(user => user.surname==(payload.surname=='' ? user.surname:payload.surname)) 
-				.filter(user => user.role==(payload.role=='' ? user.role:payload.role)) 
-				.filter(user => user.tenant==(payload.tenant=='' ? user.tenant:payload.tenant)) 
-
-			};
-			// return { ...state, users: users.filter((user) => user==payload) };
+			state.filters = omitBy(payload, (val) => !val);
 		},
 		resetUser:()=>{
 			return {...initialState}
@@ -63,6 +54,7 @@ const userSlice = createSlice({
 });
 
 export const userSelector = (state: RootState) => state.users.users;
+export const filtersSelector = (state: RootState) => state.users.filters;
 
 export const { addUser, deleteUser, editUser,searchUser,resetUser } = userSlice.actions;
 

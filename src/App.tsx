@@ -16,9 +16,10 @@ const Mbox = loadable(() => import('./pages/Mbox'));
 const Queue = loadable(() => import('./pages/Mbox/Queue'));
 
 
-const Settings = loadable(() => import('./pages/Settings/Settings'));
-const Users = loadable(() => import('./pages/Settings/Users/Users'));
-const Roles = loadable(() => import('./pages/Settings/Roles/Roles'));
+const Settings = loadable(() => import('./pages/Settings'));
+const Users = loadable(() => import('./components/Users'));
+const Roles = loadable(() => import('./components/Roles'));
+const Tenants = loadable(() => import('./components/Tenants'));
 
 const Analytics = loadable(() => import('./pages/Analytics'));
 const Channels = loadable(() => import('./pages/Channels'));
@@ -52,7 +53,7 @@ function App() {
 				<Route path='settings' element={<Settings />}>
 					<Route path='users' element={<Users />} />
 					<Route path='roles' element={<Roles />} />
-					<Route path='tenants' element={<h2>Tenants</h2>} />
+					<Route path='tenants' element={<Tenants/>} />
 				</Route>
 				<Route path='profile' element={<ProfileLayout />}>
 					<Route path='security' element={<SecurityProfile />} />
