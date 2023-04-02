@@ -5,13 +5,11 @@ import type { RootState } from './store';
 
 interface State {
 	users: Users[];
-	loading: boolean;
 	filters: Partial<Users>;
 }
 
 const initialState: State = {
 	users: [],
-	loading: false,
 	filters: {} as any,
 };
 

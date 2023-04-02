@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { cloneDeep, findIndex } from 'lodash';
+import { cloneDeep, findIndex, omitBy } from 'lodash';
 import type { Tenants } from '../models';
 import type { RootState } from './store';
 interface State {
 	tenants: Tenants[];
-	loading: boolean;
+	filters: Partial<Tenants>;
 }
 
 const initialState: State = {
 	tenants: [],
-	loading: false,
+	filters: {} as any,
 };
 
 const tenantSlice = createSlice({
@@ -34,23 +34,25 @@ const tenantSlice = createSlice({
 				state.tenants[index] = payload;
 			}
 		},
-		searchTenant: (state, { payload }: PayloadAction<Pick<Tenants, 'tenant'>>) => {
-			console.log('redux', payload.tenant);
-			const tenants = cloneDeep(state.tenants);
-			return { ...state, tenants: tenants
-				.filter(tenant => tenant.tenant==(payload.tenant=='' ? tenant.tenant:payload.tenant)) 
-
-			 };
+		searchTenant: (state, { payload }: PayloadAction<Tenants>) => {
+			state.filters = omitBy(payload, (val) => !val);
 		},
+		// searchTenant: (state, { payload }: PayloadAction<Pick<Tenants, 'tenant'>>) => {
+		// 	console.log('redux', payload.tenant);
+		// 	const tenants = cloneDeep(state.tenants);
+		// 	return { ...state, tenants: tenants
+		// 		.filter(tenant => tenant.tenant==(payload.tenant=='' ? tenant.tenant:payload.tenant)) 
+
+		// 	 };
+		// },
 		resetTenant:()=>{
 			return {...initialState}
 		}
-
-
 	},
 });
 
 export const tenantSelector = (state: RootState) => state.tenants.tenants;
+export const filtersSelector = (state: RootState) => state.tenants.filters;
 
 export const { addTenant, deleteTenant, editTenant,searchTenant,resetTenant } = tenantSlice.actions;
 

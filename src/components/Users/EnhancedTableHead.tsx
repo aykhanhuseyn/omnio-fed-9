@@ -31,7 +31,7 @@ export const EnhancedTableHead = ({ order, orderBy, onRequestSort, loading}:Enha
     return (
       <TableHead>
         <TableRow>
-          {/* {headCells.map((headCell) => (
+          {headCells.map((headCell) => (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? "right" : "left"}
@@ -64,10 +64,9 @@ export const EnhancedTableHead = ({ order, orderBy, onRequestSort, loading}:Enha
                 </TableSortLabel>
               )}
             </TableCell>
-          ))} */}
+          ))}
 
-{_.map(headCells,function(headCell:any){
-  return            ( <TableCell
+{/* {_.map(headCells,(headCell:any)=> <TableCell
   key={headCell.id}
   align={headCell.numeric ? "right" : "left"}
   sortDirection={orderBy === headCell.id ? order : false}
@@ -100,7 +99,7 @@ export const EnhancedTableHead = ({ order, orderBy, onRequestSort, loading}:Enha
   )}
 </TableCell>)
 
-})}
+} */}
 
         </TableRow>
       </TableHead>
