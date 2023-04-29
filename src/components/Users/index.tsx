@@ -1,4 +1,5 @@
-import * as _ from 'lodash'
+// import * as _ from 'lodash'
+import { map, filter } from "lodash";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
@@ -56,7 +57,7 @@ function stableSort<T>(
   array: readonly T[],
   comparator: (a: T, b: T) => number
 ) {
-  const stabilizedThis = _.map(array, (el, index) => [el, index] as [T, number]);
+  const stabilizedThis = map(array, (el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) {
@@ -147,9 +148,10 @@ export default function Users() {
               loading={loading}
             />
             <TableBody>
-              {stableSort(
-                _.filter(users, { ...filters }),
-                getComparator(order, orderBy))
+            {stableSort(
+                filter(users, filters) as any,
+                getComparator(order, orderBy)
+              )
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((user, index) => {
                   const isItemSelected = isSelected(user.name);

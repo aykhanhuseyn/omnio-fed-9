@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import type { MouseEvent } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { CSSProperties } from "styled-components";
 import {
   Avatar,
@@ -17,7 +17,7 @@ import {
   tooltipClasses,
   MenuProps,
 } from "@mui/material";
-import { logOut } from "../../redux/auth.slice";
+import { logOut,userSelector } from "../../redux/auth.slice";
 import { badgeTypes } from "../../data/badgeTypes";
 import { sidebarData } from "../../data/sidebarData";
 
@@ -39,7 +39,7 @@ const StyledMenu = styled((props: MenuProps) => (
   & .MuiPaper-root {
     background-color: ${({ theme }) => theme.palette.primary.main};
     color: ${({ theme }) => theme.palette.common.white};
-	border: 1px solid #978CBA;
+	border: 1px solid #978cba;
   }
   & .MuiMenuItem-root {
     &:hover {
@@ -119,6 +119,7 @@ const StyledBadge = styled(Badge)`
 `;
 
 export const Sidebar = () => {
+  const userInfo = useSelector(userSelector);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const navigate = useNavigate();
@@ -161,9 +162,11 @@ export const Sidebar = () => {
       <StyledLink to="/">
         <StyledOmnio src="/Omnio_icon_white.png" alt="omnio icon"></StyledOmnio>
       </StyledLink>
-      <PurpleTooltip placement="right" title="user Name">
+      <PurpleTooltip placement="right" title={userInfo?.username}>
         <IconButton onClick={handleOpenUserMenu}>
-          <Avatar alt="user_picture" sx={{ width: 52, height: 52 }} />
+          <Avatar alt={userInfo?.name}
+          src={userInfo?.profilePhoto}
+          sx={{ width: 52, height: 52 }} />
         </IconButton>
       </PurpleTooltip>
       <StyledMenu
@@ -205,6 +208,7 @@ export const Sidebar = () => {
           vertical: "bottom",
           horizontal: "right",
         }}
+        key={badgeTypes[selectedIndex].color}
         color={badgeTypes[selectedIndex].color}
         overlap="circular"
         badgeContent=" "
