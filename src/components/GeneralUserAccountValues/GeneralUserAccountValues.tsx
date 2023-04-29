@@ -19,7 +19,7 @@ function GeneralUserAccountValues() {
 	`;
 
 	return (
-		<StyledList style={{ color: '#9E9E9E', fontSize: '14px' }}>
+		<StyledList >
 			<li>{userInfo?.username}</li>
 			<li>{userInfo?.email}</li>
 			<li>{userInfo?.jobTitle}</li>

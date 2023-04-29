@@ -1,7 +1,6 @@
 import { styled } from '@mui/system';
 import { Typography } from '@mui/material';
-import SecurityPasswordView from '../../../components/SecurityPasswordView/SecurityPasswordView';
-import SecurityChangePassword from '../../../components/SecurityChangePassword/SecurityChangePassword';
+import SecurityPassword from '../../../components/SecurityPassword/SecurityPassword';
 
 function SecurityProfile() {
 	const StyledDiv = styled('div')`
@@ -10,13 +9,12 @@ function SecurityProfile() {
 	return (
 		<StyledDiv>
 			<Typography
-				style={{ fontSize: '26px', padding: '19px 0 19px 20px', fontWeight: 600 }}
+				style={{ fontSize: '20px', padding: '19px 0 19px 20px', fontWeight: 500 }}
 				variant='h2'
 			>
 				Security and login
 			</Typography>
-			<SecurityPasswordView />
-			<SecurityChangePassword />
+			<SecurityPassword/>
 		</StyledDiv>
 	);
 }

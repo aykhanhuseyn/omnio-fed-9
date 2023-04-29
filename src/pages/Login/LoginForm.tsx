@@ -11,7 +11,7 @@ import {
 import QuestionAnswer from "@mui/icons-material/QuestionAnswer";
 import { Form } from "./StyledForm";
 import { Header } from "./StyledForm";
-import { logIn } from "../../redux/auth.slice";
+import { authErrorSelector, logIn } from "../../redux/auth.slice";
 import React from "react";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
@@ -22,6 +22,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginUser } from "../../models";
 import { useForm } from "react-hook-form";
 import { loginSelector } from "../../redux/auth.slice";
+import ErrorMessage from "./ErrorMessage";
 
 // const passwordSpecialChars = ["!", "@", "#", "$", "%", "&"];
 const schema = object().shape({
@@ -46,6 +47,7 @@ const schema = object().shape({
 function LoginForm() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(loginSelector);
+  const error = useSelector(authErrorSelector);
 
   const { register, handleSubmit, formState } = useForm<LoginUser>({
     mode: "onChange",
@@ -53,6 +55,7 @@ function LoginForm() {
     reValidateMode: "onChange",
     resolver: yupResolver(schema),
   });
+
   const onSubmit = (data: any) => {
     console.log(data);
     dispatch(logIn(data));
@@ -60,12 +63,6 @@ function LoginForm() {
 
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
 
   return (
     <div style={{ width: "100vw", height: "100vh", background: "#EEE3F4" }}>
@@ -161,6 +158,8 @@ function LoginForm() {
           Login
         </Button>
       </Form>
+
+      <ErrorMessage message={error!} />
 
       <img
         src="../shape_2.png"

@@ -3,7 +3,6 @@ import { User } from '../models';
 export const users: User[] = [
 	{
 		username: 'aynur',
-		id:'1',
 		password: '1234',
 		birthDate: '1999-12-12',
 		name: 'Aynur',

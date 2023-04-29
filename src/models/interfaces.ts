@@ -14,7 +14,6 @@ type Year = `${19 | 20}${Int}${Int}`;
 
 export interface User extends Omit<LoginUser, 'remember'> {
 	name: string;
-	id?:string;
 	surname: string;
 	birthDate: `${Year}-${Month}-${Day}`;
 	email: `${string}@${string}.${

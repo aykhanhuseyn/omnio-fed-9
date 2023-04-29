@@ -1,5 +1,6 @@
+
 import {NavLink} from 'react-router-dom'
-import {Typography} from '@mui/material'
+import {ListItem, ListItemIcon, ListItemText, Typography} from '@mui/material'
 import {styled} from '@mui/system';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SecurityIcon from '@mui/icons-material/Security';
@@ -15,33 +16,45 @@ const StyledNav =styled ('nav')`
 display:flex;
 flex-direction:column;
 `
-const StyledLi = styled ('li')`
-display:flex;
-align-items: center;
-gap:15px;
-font-size:16px;
-color:#574B90;
-margin-bottom:24px;
-cursor:pointer;
-padding:10px 6px;
+ const StyledNavLink = styled(NavLink)`
+ color: #574b90;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  .MuiSvgIcon-root {
+      color: #978CBA;
+    }
 
-`
+  &:hover {
+    background-color: #F5F5F5;;
+  }
+  &.active {
+    background-color: #EEE3F4;
+    color: #574b90;
+  }
+`;
+
 return(
     <StyledDiv>
 <Typography style={{fontSize:'24px', padding:'16px 0 16px 20px'}} 
 color='grey darken-4'variant="h1">Profile</Typography>
 <StyledNav>
-    <ul>
-<StyledLi>
-    <SettingsIcon/>
-    <NavLink to = 'general'>General</NavLink>
-</StyledLi>
-<StyledLi>
-    <SecurityIcon/>
-    <NavLink to = 'security'>Security</NavLink>
-</StyledLi>
-
-    </ul>
+    <StyledNavLink to="general">
+    <ListItem>
+        <ListItemIcon>
+        <SettingsIcon />  
+        </ListItemIcon>
+        <ListItemText primary='General' />
+        </ListItem>
+    </StyledNavLink>
+    <StyledNavLink to="security">
+    <ListItem>
+        <ListItemIcon>
+        <SecurityIcon/>
+        </ListItemIcon>
+        <ListItemText primary='Security' />
+        </ListItem>
+    </StyledNavLink>
 </StyledNav>
     </StyledDiv>
 );
@@ -49,4 +62,4 @@ color='grey darken-4'variant="h1">Profile</Typography>
 }
 
 
-export default ProfileSide
+export default ProfileSide

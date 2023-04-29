@@ -31,9 +31,9 @@ function GeneralUserInfo() {
 			<Flex direction='column' align='center' justify='center'>
 				<img style={{width:'100px'}} src={userInfo?.profilePhoto} />
 				<Typography
-					variant='h6'
-					style={{ fontWeight: '400', color: '#424242', marginBottom: '2px' }}
-				></Typography>
+					style={{ fontSize: '16px', color: '#424242', }}
+
+				>{userInfo?.name} {userInfo?.surname}</Typography>
 				<Typography style={{ color: '#574B90', fontSize: '14px' }}>
 					Supervisor
 				</Typography>

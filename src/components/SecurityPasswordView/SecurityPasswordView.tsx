@@ -1,3 +1,4 @@
+
 import { Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import KeyIcon from "@mui/icons-material/Key";
@@ -18,23 +19,25 @@ const Flex = styled("div")<FlexProps>`
   justify-content: ${(props) => props.justify || "flex-start"};
   align-items: ${(props) => props.align || "stretch"};
   background-color: ${(props) => props.background || "white"};
+
 `;
 
 function SecurityPasswordView() {
 
   return (
-    <Flex align="center" gap="15px">
-      <KeyIcon />
-      <Flex direction="column" gap="15px">
+    <Flex align="center" gap="15px" >
+      <KeyIcon sx={{color:'#9e9e9e'}} />
+      <Flex direction="column" gap="4px">
         <Typography
-          style={{ color: "#424242", fontWeight: "400", fontSize: "16px" }}
+          sx={{ color: "#424242", fontWeight: "400", fontSize: "16px" }}
           variant="h3"
         >
           Change password
         </Typography>
 
         <Typography
-          style={{ color: "#757575", fontWeight: "400", fontSize: "14px" }}
+          sx={{ color: "#757575", fontWeight: "400", fontSize: "14px" }}
+          variant="subtitle1"
         >
           It's a good idea to use a strong password that you're not using
           elsewhere

@@ -5,13 +5,17 @@ import { LoginUser, User } from '../models';
 import type { RootState } from './store';
 
 interface State {
-	user: User | null;
+	user: User | any;
+	users: User[];
 	loggedIn: boolean;
+	error: string | null;
 }
 
 const initialState: State = {
 	user: null,
+	users,
 	loggedIn: false,
+	error: null,
 };
 
 const authSlice = createSlice({
@@ -19,38 +23,40 @@ const authSlice = createSlice({
 	initialState,
 	reducers: {
 		logIn: (state, { payload }: PayloadAction<LoginUser>) => {
-			const found = find(users, {
+			state.error = null;
+			const found = find(state.users, {
 				username: payload.username,
 				password: payload.password,
 			});
 			if (found) {
 				state.user = found;
 				state.loggedIn = true;
+			} else {
+				state.error="username or email are incorrect"
 			}
 		},
 		logOut: (state) => {
+			state.error = null;
 			state.loggedIn = false;
 		},
-		editUser: (state, payload: PayloadAction<User>) => {
-			const index=findIndex(state.user, {id:payload.payload.id})
-			if(index!==-1){
-				state.user[index]=payload.payload;
-			}
+		editUser: (state, { payload }: PayloadAction<Partial<User>>) => {
+			state.error = null;
+			const index = state.users.findIndex(x => x.username === state.user?.username);
+			const user = {
+				...state.user,
+				...payload,
+			};
 
+			state.user = user;
+			if (index !== -1) state.users[index] = user;
 		},
-
-		// editUser: (state, payload: PayloadAction<User>) => {
-		// 	state.user = {
-		// 		...state.user,
-		// 		...payload,
-		// 	}
-		// },
 	},
 });
 
 export const loginSelector = (state: RootState) => state.auth.loggedIn;
 export const userSelector = (state: RootState) => state.auth.user;
+export const authErrorSelector = (state: RootState) => state.auth.error;
 
-export const { logIn, logOut } = authSlice.actions;
+export const { logIn, logOut, editUser } = authSlice.actions;
 
 export default authSlice.reducer;

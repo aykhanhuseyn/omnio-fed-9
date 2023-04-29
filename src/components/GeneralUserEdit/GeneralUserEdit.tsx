@@ -2,9 +2,9 @@ import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/system";
-import { useRef, useState } from "react";
+import { useRef, useState, FormEvent } from "react";
 import { useSelector } from "react-redux";
-import { userSelector } from "../../redux/user.slice";
+import { User } from "../../models";
 
 const StyledForm = styled("form")`
   display: flex;
@@ -12,6 +12,8 @@ const StyledForm = styled("form")`
   justify-content: center;
   align-items: center;
   gap: 30px;
+  background: #fafafa;
+  padding: 20px;
 `;
 
 const StyledImageDiv = styled("div")`
@@ -50,25 +52,38 @@ function getBase64(file: File, ref: any) {
   };
 }
 
-function GeneralUserEdit({ handleChangeEdit, onSubmit }: any) {
+interface GeneralUserEditProps {
+  handleChangeEdit: any;
+  onSubmit: (data: Partial<User>) => void;
+}
+
+function GeneralUserEdit({ handleChangeEdit, onSubmit }: GeneralUserEditProps) {
   const ref = useRef(null);
+
   const userInfo = useSelector((state: any) => state.auth?.user);
   const [photoURL, setPhotoURL] = useState("");
 
-  const handleFormSubmit = (e: any) => {
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { displayName } = e.target.elements;
-    onSubmit &&
-      onSubmit({
-        displayName: displayName.value,
-        photoURL: photoURL || userInfo?.profilePhoto,
-      });
+
+    const data = new FormData(e.currentTarget);
+
+    onSubmit({
+      name: data.get('firstName') as string,
+      surname: data.get('lastName') as string,
+      username: data.get('username') as string,
+      email: data.get('email') as User['email'],
+      jobTitle: data.get('jobTitle') as string,
+      profilePhoto: photoURL || userInfo?.profilePhoto,
+    });
   };
 
-  const onFileChange: React.ChangeEventHandler<HTMLInputElement> = async (e) => {
+  const onFileChange: React.ChangeEventHandler<HTMLInputElement> = async (
+    e
+  ) => {
     const profileImage = e.target.files?.[0];
 
-    // const base64 = 
+    // const base64 =
     getBase64(profileImage!, ref);
 
     // console.log(base64)
@@ -84,17 +99,17 @@ function GeneralUserEdit({ handleChangeEdit, onSubmit }: any) {
           src={photoURL ?? userInfo?.photoURL}
           alt={userInfo?.displayName}
           style={{
-            width: '200px',
-            height: '200px',
-            borderRadius: '50%',
-            objectFit: 'cover',
+            width: "200px",
+            height: "200px",
+            borderRadius: "50%",
+            objectFit: "cover",
           }}
         />
         <StyledInput
           style={{
-            background: 'red',
-            width: '300px',
-            height: '300px'
+            background: "red",
+            width: "300px",
+            height: "300px",
           }}
           accept="image/*"
           type="file"
@@ -107,26 +122,42 @@ function GeneralUserEdit({ handleChangeEdit, onSubmit }: any) {
         <TextField
           size="small"
           variant="outlined"
-          name="displayName"
-          label="Display Name"
+          name="firstName"
+          label="First Name"
+          defaultValue={userInfo?.name}
+        ></TextField>
+        <TextField
+          size="small"
+          variant="outlined"
+          name="lastName"
+          label="Last Name"
+          defaultValue={userInfo?.surname}
         ></TextField>
 
         <TextField
           size="small"
           variant="outlined"
-          name="Username"
+          name="username"
           label="Username"
+          defaultValue={userInfo?.username}
         ></TextField>
 
-        <TextField size="small" variant="outlined" name="email" label="Email">
+        <TextField
+          defaultValue={userInfo?.email}
+          size="small"
+          variant="outlined"
+          name="email"
+          label="Email"
+        >
           {" "}
         </TextField>
 
         <TextField
           size="small"
           variant="outlined"
-          name="JobTitle"
+          name="jobTitle"
           label="Job title"
+          defaultValue={userInfo?.jobTitle}
         ></TextField>
       </FormControl>
       <StyledDiv>
