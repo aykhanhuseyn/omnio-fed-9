@@ -50,7 +50,7 @@ function SecurityChangePassword({ onSubmit }: SecurityChangePasswordProps) {
 
     onSubmit(password);
   };
-
+//shifre 123456
   return (
     <>
       <form onSubmit={handleFormSubmit}>
