@@ -1,5 +1,6 @@
 import * as React from "react";
-import * as _ from 'lodash'
+import { map, filter } from "lodash";
+// import * as _ from 'lodash'
 import {useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
@@ -51,8 +52,7 @@ function stableSort<T>(
   comparator: (a: T, b: T) => number
 ) {
   // const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-  const stabilizedThis = _.map(array, (el, index) => [el, index] as [T, number]);
-
+  const stabilizedThis = map(array, (el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) {
@@ -143,9 +143,10 @@ export default function Tenants() {
               loading={loading}
             />
             <TableBody>
-              {stableSort(
-                _.filter(tenants, { ...filters }),
-                getComparator(order, orderBy))
+            {stableSort(
+                filter(tenants, filters) as any,
+                getComparator(order, orderBy)
+              )
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((tenant, index) => {
                   const isItemSelected = isSelected(tenant.tenant);
