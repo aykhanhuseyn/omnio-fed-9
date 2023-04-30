@@ -29,12 +29,12 @@ export const sidebarData: SideBar[] = [
 		link: '/mbox',
 		icon: QuestionAnswerIcon,
 	},
-	{
-		key: 'customers',
-		title: 'Customers',
-		link: '/customers',
-		icon: GroupsIcon,
-	},
+	// {
+	// 	key: 'customers',
+	// 	title: 'Customers',
+	// 	link: '/customers',
+	// 	icon: GroupsIcon,
+	// },
 	{
 		key: 'channels',
 		title: 'Channels',

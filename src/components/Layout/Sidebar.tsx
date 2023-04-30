@@ -83,7 +83,7 @@ const StyledLink = styled(Link)`
 `;
 
 export const StyledNav = styled("nav")`
-  margin-top: 16px;
+  margin-top: 24px;
   border-top: 1px solid #3d3575;
   display: flex;
   flex-direction: column;
@@ -93,7 +93,7 @@ export const StyledNav = styled("nav")`
 `;
 
 export const StyledNavLink = styled(NavLink)`
-  margin-bottom: 32px;
+  margin-bottom: 40px;
   padding: 8px 10px;
   border-radius: 4px;
   text-decoration: none;
